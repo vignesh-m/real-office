@@ -40,7 +40,9 @@ INSTALLED_APPS = [
 
     'meetings.apps.MeetingsConfig',
     'rooms',
-    'tasks'
+    'tasks',
+
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
