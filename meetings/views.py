@@ -32,4 +32,5 @@ def create(request):
 
 
 def view_list(request):
-    return HttpResponse(Meeting.objects.all())
+    html = ['<p>%s</p>' % str(m) for m in Meeting.objects.all()]
+    return HttpResponse(html)
