@@ -95,4 +95,3 @@ py3/
 .ropeproject
 
 tags
-*.sqlite3
