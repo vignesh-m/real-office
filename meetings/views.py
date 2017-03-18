@@ -6,7 +6,12 @@ from .models import Meeting
 
 
 def index(request):
-    return HttpResponse("Hi")
+    html = """
+    <h1> Welcome to RealOffice </h1>
+    <p> <a href='/meeting/create'> Create Meeting </a> </p>
+    <p> <a href='/meeting/list'> List Meetings </a> </p>
+    """
+    return HttpResponse(html)
 
 
 class MeetingForm(ModelForm):
@@ -24,3 +29,7 @@ def create(request):
     else:
         form = MeetingForm()
         return render(request, 'create_meeting.html', {'form': form})
+
+
+def view_list(request):
+    return HttpResponse(Meeting.objects.all())
