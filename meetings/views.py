@@ -23,9 +23,13 @@ class MeetingForm(ModelForm):
 
 def create(request):
     if request.method == 'POST':
+        # print(request.POST)
         form = MeetingForm(request.POST)
-        print(form)
-        return HttpResponse('Meeting Created!')
+        if form.is_valid:
+            form.save()
+            return HttpResponse('Meeting Created!')
+        else:
+            return HttpResponse('Invalid Meeting')
     else:
         form = MeetingForm()
         return render(request, 'create_meeting.html', {'form': form})
