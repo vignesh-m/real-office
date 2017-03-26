@@ -22,3 +22,9 @@ class Meeting(models.Model):
 
     def __str__(self):
         return '%s on %s at %s' % (self.name, self.start, self.venue)
+
+    def storeParticipants(self, text):
+        pass
+    
+    def getParticipantsAsText(self):
+        pass
