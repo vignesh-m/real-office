@@ -23,8 +23,10 @@ class Meeting(models.Model):
     def __str__(self):
         return '%s on %s at %s' % (self.name, self.start, self.venue)
 
+    # Vishwanath: To store the participants
     def storeParticipants(self, text):
-        pass
+        self.participants = " ".split(text)
     
+    # Vishwanath: to get the participants in a text form
     def getParticipantsAsText(self):
-        pass
+        return " ".join(self.participants)
