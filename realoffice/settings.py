@@ -25,7 +25,9 @@ SECRET_KEY = 'k)xqdsm%rv48v7^&r%de7r-!1nxm$@cf@=n5b(u5-17%8yo_nb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'vigneshm.pythonanywhere.com'
+]
 
 
 # Application definition
