@@ -11,7 +11,8 @@ def index(request):
     <p> <a href='/meeting/create'> Create Meeting </a> </p>
     <p> <a href='/meeting/list'> List Meetings </a> </p>
     """
-    return HttpResponse(html)
+    # return HttpResponse(html)
+    return render(request, 'index.html')
 
 
 class MeetingForm(ModelForm):
@@ -20,6 +21,9 @@ class MeetingForm(ModelForm):
         model = Meeting
         exclude = ['creatingStaff']
 
+
+def about(request):
+    return render(request, 'about.html')
 
 def create(request):
     if request.method == 'POST':
@@ -36,5 +40,18 @@ def create(request):
 
 
 def view_list(request):
-    html = ['<p>%s</p>' % str(m) for m in Meeting.objects.all()]
-    return HttpResponse(html)
+    # html = ['<p>%s</p>' % str(m) for m in Meeting.objects.all()]
+    # return HttpResponse(html)
+    if request.method == 'POST':
+        meetid = request.POST.meetid
+        print meetid
+        x = str(Meeting.objects.get(id=meetid))
+        return HttpResponse(x)
+        
+    else:
+        x = []
+        meetings = Meeting.objects.all();
+        for m in meetings:
+            x.append((str(m),m.id))
+
+        return render(request, 'view_meeting.html', {'meeting': x})
