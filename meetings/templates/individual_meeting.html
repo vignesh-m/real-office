@@ -11,41 +11,7 @@
 <style>
 html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 </style>
-<style>
-.button {
-    background-color: #bcc4d1;
-    border: none;
-    color: black;
-    padding: 13px 30px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-<script>
-function handler(id){
-        $.post("/meeting/view_list",
-        {
-          meetid: id,
-        },
-        function(data,status){
-            alert("Data: " + data + "\nStatus: " + status);
-        });
-    }
-</script>
-
 <body>
-
-<form id="form-id" method="post" action="/meeting/individual_meeting/">
-{% csrf_token %}  
-<input type="hidden" id="meetingid" name="meetid" value="0">
-<!-- <div onclick="document.getElementById('form-id').submit();">Click Me</div> -->
-</form>
 
 <!-- Navbar -->
 <div class="w3-top">
@@ -78,13 +44,15 @@ function handler(id){
 
   <div class="w3-row w3-padding-64">
     <div class="w3-twothird w3-container">
-      <h1 class="w3-text-teal">List of Meetings</h1>
-        {% csrf_token %} {% for field in meeting %}
-          <div >
-            <a href="#" class="button" style="text-align:left;width:1000px"
-              onclick="console.log('{{field.id}}');document.getElementById('meetingid').value='{{field.id}}';document.getElementById('form-id').submit()" >{{field.id}}. {{field.name}}, {{field.venue}}, {{field.start}}</a>
-          </div>
-        {% endfor %}      
+      <h1 class="w3-text-teal" style="margin-bottom:15px">Meeting Details</h1>
+      <b>Name</b><p>{{meeting.name}}</p>
+      <b>Info</b><p>{{meeting.info}}</p>
+      <b>Participants</b><p>{{meeting.participants}}</p>
+      <b>Start</b><p>{{meeting.start}}</p>
+      <b>End</b><p>{{meeting.end}}</p>
+      <b>Venue</b><p>{{meeting.venue}}</p>
+      <b>Creating Professor</b><p>{{meeting.creatingProfessor}}</p>
+      <b>Creating Staff</b><p>{{meeting.creatingStaff.first_name}}</p>
     </div>
   </div>
 
@@ -124,7 +92,6 @@ function w3_close() {
     mySidebar.style.display = "none";
     overlayBg.style.display = "none";
 }
-
 </script>
 
 </body>
