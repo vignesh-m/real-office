@@ -18,12 +18,12 @@ def index(request):
     startdate = timezone.now()
     enddate = startdate + datetime.timedelta(days=5)
 
-    m = Meeting.objects.filter(start__range=[startdate,enddate])
-    print len(m)
+    m = Meeting.objects.filter(start__range=[startdate, enddate])
+    # print len(m)
 
     t = Task.objects.filter(meeting__in=m)
 
-    return render(request, 'index.html', {'meeting':m,'task':t})
+    return render(request, 'index.html', {'meeting': m, 'task': t})
 
 
 class MeetingForm(ModelForm):
@@ -35,6 +35,7 @@ class MeetingForm(ModelForm):
 
 def about(request):
     return render(request, 'about.html')
+
 
 def create(request):
     if request.method == 'POST':
@@ -54,11 +55,12 @@ def view_list(request):
     # html = ['<p>%s</p>' % str(m) for m in Meeting.objects.all()]
     # return HttpResponse(html)
     # x = []
-    meetings = Meeting.objects.all();
+    meetings = Meeting.objects.all()
     # for m in meetings:
     #     x.append((str(m),m.id))
 
     return render(request, 'view_meeting.html', {'meeting': meetings})
+
 
 def individual_meeting(request):
     if request.method == 'POST':
@@ -66,4 +68,4 @@ def individual_meeting(request):
         meetid = request.POST['meetid']
         # print meetid
         x = (Meeting.objects.get(id=meetid))
-        return render(request, 'individual_meeting.html', {'meeting':x})
+        return render(request, 'individual_meeting.html', {'meeting': x})
