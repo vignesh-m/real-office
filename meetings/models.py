@@ -15,7 +15,7 @@ class Meeting(models.Model):
         User, on_delete=models.SET_NULL, null=True)
     creatingProfessor = models.CharField(max_length=200, blank=True)
     # store comma sep list of participants, TODO add helper functions
-    participants = models.TextField(default='[]', blank=False, null=False)
+    participants = models.TextField(default='', blank=False, null=False)
     start = models.DateTimeField(default=timezone.now)
     end = models.DateTimeField(default=timezone.now)
     venue = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True)

@@ -11,7 +11,28 @@
 <style>
 html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 </style>
+<style>
+.button {
+    background-color: #bcc4d1;
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+</style>
+
 <body>
+
+<form id="form-id" method="post" action="/meeting/individual_meeting/">
+{% csrf_token %}  
+<input type="hidden" id="meetingid" name="meetid" value="0">
+<!-- <div onclick="document.getElementById('form-id').submit();">Click Me</div> -->
+</form>
 
 <!-- Navbar -->
 <div class="w3-top">
@@ -44,19 +65,36 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 
   <div class="w3-row w3-padding-64">
     <div class="w3-twothird w3-container">
-		<form action="/meeting/create/" method="post">
-		    {% csrf_token %} {% for field in form %}
-		    <div class="form-group">
-		        {{ field.errors }} {{ field.label_tag }} {{ field }}
-		    </div>
-		    {% endfor %}
-		    <input type="submit" value="Submit" />
-		</form>
-	</div>
+      <h3 class="w3-text-teal">Upcoming Meetings (5 days)</h3>
+        {% csrf_token %} {% for field in meeting %}
+          <div >
+            <a href="#" class="button" style="text-align:left;width:1000px"
+              onclick="console.log('{{field.id}}');document.getElementById('meetingid').value='{{field.id}}';document.getElementById('form-id').submit()" >{{field.id}}. {{field.name}}, {{field.venue}}, {{field.start}}</a>
+          </div>
+        {% endfor %}      
+    </div>
+  </div>
+
+  <div class="w3-row w3-padding-64">
+    <div class="w3-twothird w3-container">
+      <h3 class="w3-text-teal">Insert Calendar</h3>
+    </div>
+  </div>
+
+  <div class="w3-row w3-padding-64">
+    <div class="w3-twothird w3-container">
+      <h3 class="w3-text-teal">Pending Tasks</h3>
+        {% csrf_token %} {% for field in task %}
+          <div >
+            <a class="button" style="text-align:left;width:1000px">
+              {{field.id}}. {{field.name}}, {{field.meeting.name}}, {{field.meeting.start}}</a>
+          </div>
+        {% endfor %}      
+    </div>
   </div>
 
   <footer id="RealOffice">
-    <div class="w3-container w3-theme-l2 w3-padding-32" >
+    <div class="w3-container w3-theme-l2 w3-padding-32" style="margin-top:150px">
       <h4>Department of CSE, IIT Madras</h4>
     </div>
 
