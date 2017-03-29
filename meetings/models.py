@@ -23,12 +23,12 @@ class Meeting(models.Model):
     def __str__(self):
         return '%s on %s at %s' % (self.name, self.start, self.venue)
 
-    # Vishwanath: To store the participants
-    def storeParticipants(self, participantList):
+    # Vishwanath: To store the participants in text form
+    def store_participants(self, participantList):
         delimiter = " "
-        self.participants = delimiter.join(participantList) # list -> string
-    
-    # Vishwanath: to get the participants in a text form
-    def getParticipantsAsText(self):
+        self.participants = delimiter.join(participantList)  # list -> string
+
+    # Vishwanath: to get the participants in a list form
+    def get_participants(self):
         delimiter = " "
         return self.participants.split(delimiter)   # string -> list
