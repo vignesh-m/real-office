@@ -6,7 +6,7 @@ import datetime
 
 from .models import Meeting
 from tasks.models import Task
-
+from rooms.models import Room
 
 def index(request):
     html = """
@@ -39,16 +39,18 @@ def about(request):
 
 def create(request):
     if request.method == 'POST':
-        # print(request.POST)
-        form = MeetingForm(request.POST)
-        if form.is_valid:
-            form.save()
-            return HttpResponse('Meeting Created!')
-        else:
-            return HttpResponse('Invalid Meeting')
+        print(request.POST)
+        # form = MeetingForm(request.POST)
+        # if form.is_valid:
+        #     form.save()
+        #     return HttpResponse('Meeting Created!')
+        # else:
+        #     return HttpResponse('Invalid Meeting')
+        return HttpResponse('OK')
     else:
         form = MeetingForm()
-        return render(request, 'create_meeting.html', {'form': form})
+        r = Room.objects.all();
+        return render(request, 'create_meeting.html', {'form': form, 'room': r})
 
 
 def view_list(request):
