@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.forms import ModelForm
 from django.utils import timezone
 import datetime
+from django.contrib.auth.models import User
 
 from .models import Meeting
 from tasks.models import Task
@@ -39,14 +40,38 @@ def about(request):
 
 def create(request):
     if request.method == 'POST':
-        print(request.POST)
+        # print(request.POST)
+        form = request.POST
         # form = MeetingForm(request.POST)
         # if form.is_valid:
         #     form.save()
         #     return HttpResponse('Meeting Created!')
         # else:
         #     return HttpResponse('Invalid Meeting')
+        u = User.objects.get(id=2)
+        m = Meeting()
+        m.name = form['Name']
+        m.info = form['Info']
+        m.creatingProfessor = form['CreatingProfessor']
+        m.creatingStaff = u # default vignesh for now
+        m.participants = form['Participants']
+        m.start = form['Start']
+        m.end = form['End']
+        ven = Room.objects.get(id=form['Venue'])
+        m.venue = ven
+        m.save()
+
+        taskComma = form['tasks']
+        taskList = taskComma.split(",")
+
+        for task in taskList:
+            t = Task()
+            t.meeting = m
+            t.name = task
+            t.save()
+
         return HttpResponse('OK')
+
     else:
         form = MeetingForm()
         r = Room.objects.all();
