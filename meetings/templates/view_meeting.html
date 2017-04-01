@@ -15,14 +15,6 @@
 }
 </style>
 
-
-
-<form id="form-id" method="post" action="/meeting/individual_meeting/">
-{% csrf_token %}  
-<input type="hidden" id="meetingid" name="meetid" value="0">
-<!-- <div onclick="document.getElementById('form-id').submit();">Click Me</div> -->
-</form>
-
 <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
 
   <div class="w3-row w3-padding-64">
@@ -30,8 +22,7 @@
       <h1 class="w3-text-teal">List of Meetings</h1>
         {% csrf_token %} {% for field in meeting %}
           <div >
-            <a href="#" class="button" style="text-align:left;width:1000px"
-              onclick="console.log('{{field.id}}');document.getElementById('meetingid').value='{{field.id}}';document.getElementById('form-id').submit()" >{{field.id}}. {{field.name}}, {{field.venue}}, {{field.start}}</a>
+            <a href="/meeting/individual_meeting?meetid={{field.id}}" class="button" style="text-align:left;width:1000px" >{{field.id}}. {{field.name}}, {{field.venue}}, {{field.start}}</a>
           </div>
         {% endfor %}      
     </div>

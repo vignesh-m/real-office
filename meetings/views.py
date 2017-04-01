@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import ModelForm
 from django.utils import timezone
@@ -16,7 +16,7 @@ def index(request):
 
     m = Meeting.objects.filter(start__range=[startdate, enddate])
 
-    t = Task.objects.filter(meeting__in=m)
+    t = Task.objects.filter(meeting__in=m, complete='False')
 
     return render(request, 'index.html', {'user': request.user, 'meeting': m, 'task': t})
 
@@ -31,17 +31,13 @@ class MeetingForm(ModelForm):
 def about(request):
     return render(request, 'about.html')
 
+def success(request):
+    return render(request, 'meeting_success.html')
 
 def create(request):
     if request.method == 'POST':
         # print(request.POST)
         form = request.POST
-        # form = MeetingForm(request.POST)
-        # if form.is_valid:
-        #     form.save()
-        #     return HttpResponse('Meeting Created!')
-        # else:
-        #     return HttpResponse('Invalid Meeting')
         u = User.objects.get(id=2)
         m = Meeting()
         m.name = form['Name']
@@ -55,38 +51,31 @@ def create(request):
         m.venue = ven
         m.save()
 
-        taskComma = form['tasks']
-        taskList = taskComma.split(",")
+        if(len(form['tasks'])>0):
+            taskComma = form['tasks']
+            taskList = taskComma.split(",")
 
-        for task in taskList:
-            t = Task()
-            t.meeting = m
-            t.name = task
-            t.save()
+            for task in taskList:
+                t = Task()
+                t.meeting = m
+                t.name = task
+                t.save()
 
-        return HttpResponse('OK')
+        return redirect('/meeting/success')
 
     else:
         form = MeetingForm()
         r = Room.objects.all()
         return render(request, 'create_meeting.html', {'user': request.user, 'form': form, 'room': r})
 
-
 def view_list(request):
-    # html = ['<p>%s</p>' % str(m) for m in Meeting.objects.all()]
-    # return HttpResponse(html)
-    # x = []
     meetings = Meeting.objects.all()
-    # for m in meetings:
-    #     x.append((str(m),m.id))
-
     return render(request, 'view_meeting.html', {'user': request.user, 'meeting': meetings})
 
 
 def individual_meeting(request):
-    if request.method == 'POST':
-        # print request.POST
-        meetid = request.POST['meetid']
-        # print meetid
-        x = (Meeting.objects.get(id=meetid))
+    if request.method == 'GET':
+        meetid = request.GET['meetid']
+        print meetid
+        x = (Meeting.objects.get(id=(meetid)))
         return render(request, 'individual_meeting.html', {'user': request.user, 'meeting': x})
