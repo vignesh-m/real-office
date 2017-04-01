@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from meetings.models import Meeting
 
 
 class Room(models.Model):
@@ -28,3 +27,7 @@ class Room(models.Model):
             if is_clash(start_time, end_time, m.start, m.end):
                 return False
         return True
+
+    @classmethod
+    def get_available(cls, start_time, end_time):
+        return [room for room in cls.objects.all() if room.is_free(start_time, end_time)]
