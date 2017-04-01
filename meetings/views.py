@@ -9,22 +9,16 @@ from .models import Meeting
 from tasks.models import Task
 from rooms.models import Room
 
+
 def index(request):
-    html = """
-    <h1> Welcome to RealOffice </h1>
-    <p> <a href='/meeting/create'> Create Meeting </a> </p>
-    <p> <a href='/meeting/list'> List Meetings </a> </p>
-    """
-    # return HttpResponse(html)
     startdate = timezone.now()
     enddate = startdate + datetime.timedelta(days=5)
 
     m = Meeting.objects.filter(start__range=[startdate, enddate])
-    # print len(m)
 
     t = Task.objects.filter(meeting__in=m)
 
-    return render(request, 'index.html', {'meeting': m, 'task': t})
+    return render(request, 'index.html', {'user': request.user, 'meeting': m, 'task': t})
 
 
 class MeetingForm(ModelForm):
@@ -53,7 +47,7 @@ def create(request):
         m.name = form['Name']
         m.info = form['Info']
         m.creatingProfessor = form['CreatingProfessor']
-        m.creatingStaff = u # default vignesh for now
+        m.creatingStaff = u  # default vignesh for now
         m.participants = form['Participants']
         m.start = form['Start']
         m.end = form['End']
@@ -74,8 +68,8 @@ def create(request):
 
     else:
         form = MeetingForm()
-        r = Room.objects.all();
-        return render(request, 'create_meeting.html', {'form': form, 'room': r})
+        r = Room.objects.all()
+        return render(request, 'create_meeting.html', {'user': request.user, 'form': form, 'room': r})
 
 
 def view_list(request):
@@ -86,7 +80,7 @@ def view_list(request):
     # for m in meetings:
     #     x.append((str(m),m.id))
 
-    return render(request, 'view_meeting.html', {'meeting': meetings})
+    return render(request, 'view_meeting.html', {'user': request.user, 'meeting': meetings})
 
 
 def individual_meeting(request):
@@ -95,4 +89,4 @@ def individual_meeting(request):
         meetid = request.POST['meetid']
         # print meetid
         x = (Meeting.objects.get(id=meetid))
-        return render(request, 'individual_meeting.html', {'meeting': x})
+        return render(request, 'individual_meeting.html', {'user': request.user, 'meeting': x})
