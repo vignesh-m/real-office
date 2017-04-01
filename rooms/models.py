@@ -8,6 +8,7 @@ class Room(models.Model):
     hasProjector = models.BooleanField(default=True)
     hasAC = models.BooleanField(default=False)
     hasMic = models.BooleanField(default=True)
+    capacity = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
