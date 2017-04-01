@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'vigneshm.pythonanywhere.com',
-    'localhost'
+    'localhost',
+    'realoffice.herokuapp.com'
 ]
 
 
