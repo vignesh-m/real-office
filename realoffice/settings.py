@@ -26,7 +26,8 @@ SECRET_KEY = 'k)xqdsm%rv48v7^&r%de7r-!1nxm$@cf@=n5b(u5-17%8yo_nb'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'vigneshm.pythonanywhere.com'
+    'vigneshm.pythonanywhere.com',
+    'localhost'
 ]
 
 
