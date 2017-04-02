@@ -1,19 +1,18 @@
+import datetime
+
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.forms import ModelForm
 from django.utils import timezone
-import datetime
-from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
 
 from .models import Meeting
 from tasks.models import Task
 from rooms.models import Room
 
 
+@login_required
 def index(request):
-    if(request.user.is_authenticated == False):
-        return redirect('/login')
-
     startdate = timezone.now()
     enddate = startdate + datetime.timedelta(days=5)
 
@@ -30,19 +29,26 @@ class MeetingForm(ModelForm):
         exclude = ['creatingStaff']
 
 
+@login_required
 def about(request):
     return render(request, 'about.html')
 
 
+@login_required
+def success(request):
+    return render(request, 'meeting_success.html')
+
+
+@login_required
 def create(request):
-
-    if(request.user.is_authenticated == False):
-        return redirect('/login')
-
+    # if not request.user.is_authenticated:
+    #     messages.add_message(request, messages.ERROR,
+    #                          'Login to Create Meetings')
+    #     # return HttpResponseRedirect('/login', request=request)
+    #     return redirect('login')
     if request.method == 'POST':
         # print(request.POST)
         form = request.POST
-        # u = User.objects.get(id=2)
         m = Meeting()
         m.name = form['Name']
         m.info = form['Info']
@@ -57,7 +63,7 @@ def create(request):
 
         if(len(form['tasks']) > 0):
             taskComma = form['tasks']
-            taskComma = taskComma.replace(' ','')
+            # taskComma = taskComma.replace(' ','')
             taskList = taskComma.split(",")
 
             for task in taskList:
@@ -73,30 +79,27 @@ def create(request):
         r = Room.objects.all()
         return render(request, 'create_meeting.html', {'user': request.user, 'room': r})
 
+@login_required
 def view_list(request):
-
-    if(request.user.is_authenticated == False):
-        return redirect('/login')
-
     meetings = Meeting.objects.all()
     return render(request, 'view_meeting.html', {'user': request.user, 'meeting': meetings})
 
 
+@login_required
 def individual_meeting(request):
-    if(request.user.is_authenticated == False):
-        return redirect('/login')
-
     if request.method == 'GET':
         meetid = request.GET['meetid']
         x = (Meeting.objects.get(id=(meetid)))
         return render(request, 'individual_meeting.html', {'user': request.user, 'meeting': x})
 
+@login_required
 def delete(request):
     return HttpResponse('Delete')
 
+@login_required
 def edit(request):
-    if(request.user.is_authenticated == False):
-        return redirect('/login')
+    # if(request.user.is_authenticated == False):
+    #     return redirect('/login')
 
     if request.method == 'POST':
         # print(request.POST)
@@ -123,7 +126,7 @@ def edit(request):
 
         if(len(form['tasks']) > 0):
             taskComma = form['tasks']
-            taskComma = taskComma.replace(' ','')
+            # taskComma = taskComma.replace(' ','')
             taskList = taskComma.split(",")
 
             for task in taskList:

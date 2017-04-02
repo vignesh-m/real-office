@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 
 def login_view(request):
     if request.method == 'GET':
+        for m in messages.get_messages(request):
+            print(m)
         return render(request, 'login.html')
     else:
         print(request.POST)
