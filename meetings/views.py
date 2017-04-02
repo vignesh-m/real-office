@@ -87,7 +87,7 @@ def view_list(request):
 
 @login_required
 def individual_meeting(request):
-    if request.method == 'GET':
+    if (request.method == 'GET'):
         meetid = request.GET['meetid']
         x = (Meeting.objects.get(id=(meetid)))
         return render(request, 'individual_meeting.html', {'user': request.user, 'meeting': x})
@@ -104,7 +104,7 @@ def edit(request):
     # if(request.user.is_authenticated == False):
     #     return redirect('/login')
 
-    if request.method == 'POST':
+    if (request.method == 'POST'):
         # print(request.POST)
         form = request.POST
         # u = User.objects.get(id=2)
@@ -185,3 +185,30 @@ def edit(request):
         # print(s,e)
 
         return render(request, 'edit.html', {'user': request.user, 'meeting': x, 'room': r, 'tasks': tasks, 's': s, 'e': e})
+
+@login_required
+def add_room(request):
+    if(request.method == 'POST'):
+        # print request.POST
+        r = Room()
+        r.name = request.POST['Name']
+        r.capacity = request.POST['capacity']
+        temp = request.POST.get('hasAC')
+        if(temp != None):
+            r.hasAC = True
+        else:
+            r.hasAC = False
+        temp = request.POST.get('hasMic')
+        if(temp != None):
+            r.hasMic = True
+        else:
+            r.hasMic = False
+        temp = request.POST.get('hasProjector')
+        if(temp != None):
+            r.hasProjector = True
+        else:
+            r.hasProjector = False
+        r.save()
+        return redirect('/')
+
+    return render(request, 'add_room.html')
