@@ -35,11 +35,13 @@ def about(request):
 
     return render(request, 'about.html')
 
+
 def success(request):
     if(request.user.is_authenticated == False):
         return redirect('/login')
 
     return render(request, 'meeting_success.html')
+
 
 def create(request):
 
@@ -62,7 +64,7 @@ def create(request):
         m.venue = ven
         m.save()
 
-        if(len(form['tasks'])>0):
+        if(len(form['tasks']) > 0):
             taskComma = form['tasks']
             taskList = taskComma.split(",")
 
@@ -77,6 +79,7 @@ def create(request):
     else:
         r = Room.objects.all()
         return render(request, 'create_meeting.html', {'user': request.user, 'room': r})
+
 
 def view_list(request):
 
@@ -93,6 +96,5 @@ def individual_meeting(request):
 
     if request.method == 'GET':
         meetid = request.GET['meetid']
-        print meetid
         x = (Meeting.objects.get(id=(meetid)))
         return render(request, 'individual_meeting.html', {'user': request.user, 'meeting': x})
