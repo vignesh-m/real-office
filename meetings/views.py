@@ -1,15 +1,19 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.forms import ModelForm
 from django.utils import timezone
 import datetime
 from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 
 from .models import Meeting
 from tasks.models import Task
 from rooms.models import Room
 
 
+@login_required
 def index(request):
     startdate = timezone.now()
     enddate = startdate + datetime.timedelta(days=5)
@@ -28,24 +32,31 @@ class MeetingForm(ModelForm):
         exclude = ['creatingStaff']
 
 
+@login_required
 def about(request):
     return render(request, 'about.html')
 
 
+@login_required
 def success(request):
     return render(request, 'meeting_success.html')
 
 
+@login_required
 def create(request):
+    # if not request.user.is_authenticated:
+    #     messages.add_message(request, messages.ERROR,
+    #                          'Login to Create Meetings')
+    #     # return HttpResponseRedirect('/login', request=request)
+    #     return redirect('login')
     if request.method == 'POST':
         # print(request.POST)
         form = request.POST
-        u = User.objects.get(id=2)
         m = Meeting()
         m.name = form['Name']
         m.info = form['Info']
         m.creatingProfessor = form['CreatingProfessor']
-        m.creatingStaff = u  # default vignesh for now
+        m.creatingStaff = request.user
         m.participants = form['Participants']
         m.start = form['Start']
         m.end = form['End']
@@ -71,11 +82,13 @@ def create(request):
         return render(request, 'create_meeting.html', {'user': request.user, 'form': form, 'room': r})
 
 
+@login_required
 def view_list(request):
     meetings = Meeting.objects.all()
     return render(request, 'view_meeting.html', {'user': request.user, 'meeting': meetings})
 
 
+@login_required
 def individual_meeting(request):
     if request.method == 'GET':
         meetid = request.GET['meetid']

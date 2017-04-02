@@ -78,6 +78,7 @@ TEMPLATES = [
     },
 ]
 
+LOGIN_URL = '/login/'
 WSGI_APPLICATION = 'realoffice.wsgi.application'
 
 
