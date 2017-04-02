@@ -11,6 +11,9 @@ from rooms.models import Room
 
 
 def index(request):
+    if(request.user.is_authenticated == False):
+        return redirect('/login')
+
     startdate = timezone.now()
     enddate = startdate + datetime.timedelta(days=5)
 
@@ -29,12 +32,20 @@ class MeetingForm(ModelForm):
 
 
 def about(request):
+
     return render(request, 'about.html')
 
 def success(request):
+    if(request.user.is_authenticated == False):
+        return redirect('/login')
+
     return render(request, 'meeting_success.html')
 
 def create(request):
+
+    if(request.user.is_authenticated == False):
+        return redirect('/login')
+
     if request.method == 'POST':
         # print(request.POST)
         form = request.POST
@@ -43,7 +54,7 @@ def create(request):
         m.name = form['Name']
         m.info = form['Info']
         m.creatingProfessor = form['CreatingProfessor']
-        m.creatingStaff = u  # default vignesh for now
+        m.creatingStaff = request.user
         m.participants = form['Participants']
         m.start = form['Start']
         m.end = form['End']
@@ -64,16 +75,22 @@ def create(request):
         return redirect('/meeting/success')
 
     else:
-        form = MeetingForm()
         r = Room.objects.all()
-        return render(request, 'create_meeting.html', {'user': request.user, 'form': form, 'room': r})
+        return render(request, 'create_meeting.html', {'user': request.user, 'room': r})
 
 def view_list(request):
+
+    if(request.user.is_authenticated == False):
+        return redirect('/login')
+
     meetings = Meeting.objects.all()
     return render(request, 'view_meeting.html', {'user': request.user, 'meeting': meetings})
 
 
 def individual_meeting(request):
+    if(request.user.is_authenticated == False):
+        return redirect('/login')
+
     if request.method == 'GET':
         meetid = request.GET['meetid']
         print meetid
