@@ -20,6 +20,7 @@ from . import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^meeting/', include('meetings.urls')),
-    url(r'^login/$', views.login, name='login'),
+    url(r'^login/$', views.login_view, name='login'),
+    url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^', include('meetings.urls')),
 ]
