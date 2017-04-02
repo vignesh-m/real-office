@@ -18,7 +18,7 @@ def index(request):
 
     m = Meeting.objects.filter(start__range=[startdate, enddate]).order_by('start')
 
-    t = Task.objects.filter(meeting__in=m, complete='False')
+    t = Task.objects.filter(meeting__in=m, complete='False').order_by('meeting__start')
 
     return render(request, 'index.html', {'user': request.user, 'meeting': m, 'task': t})
 
@@ -94,7 +94,10 @@ def individual_meeting(request):
 
 @login_required
 def delete(request):
-    return HttpResponse('Delete')
+    meetid = request.GET['meetid']
+    x = Meeting.objects.get(id = meetid)
+    x.delete()
+    return render(request, 'meeting_success.html', {'msg':'Deleted'})
 
 @login_required
 def edit(request):
