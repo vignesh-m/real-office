@@ -6,12 +6,12 @@
 
   <form action="/meeting/create/" method="post">
       <div class="form-group">
-        <label for="name"><b>Name:</b></label>
-        <input type="text" class="form-control" name="Name" placeholder="Enter Meeting Name">          
+        <label for="name"><b>*Name:</b></label>
+        <input type="text" required class="form-control" name="Name" placeholder="Enter Meeting Name">          
       </div>
       <div class="form-group">
-        <label for="info"><b>Meeting Information:</b></label>
-        <input type="text" class="form-control" name="Info" placeholder="Enter Meeting Information">          
+        <label for="info"><b>*Meeting Information:</b></label>
+        <input type="text" required class="form-control" name="Info" placeholder="Enter Meeting Information">          
       </div>
       <div class="form-group">
         <label for="CreatingProfessor"><b>Creating Professor:</b></label>
@@ -22,7 +22,7 @@
         <input type="text" class="form-control" name="Participants" placeholder="Enter list of Participants">          
       </div>
       <div class="form-group">
-        <label for="Venue"><b>Venue:</b></label>
+        <label for="Venue"><b>*Venue:</b></label>
         {% csrf_token %} 
         <select name="Venue" class="form-control">
           {% for x in room %}
@@ -40,32 +40,28 @@
         <label for="Capacity"><b>Room Capacity needed:</b></label>
         <input type="text" class="form-control" name="capacity" placeholder="Enter needed room capacity">          
       </div>
+      <div class ="form-group">
+        <input class="form-control" type="button" value="Get Suggestions" style="cursor:pointer;width:250px;
+        margin-left:0px;margin-top:40px">
+      </div><br>
       <div class="form-group">
-        <label for="Start"><b>Start date and time:</b></label>
-        <input class="form-control" type="datetime-local" name="Start">          
+        <label for="Start"><b>*Start date and time:</b></label>
+        <input required class="form-control" type="datetime-local" name="Start">          
       </div>
       <div class="form-group">
-        <label for="End"><b>End date and time:</b></label>
-        <input class="form-control" type="datetime-local" name="End">          
+        <label for="End"><b>*End date and time:</b></label>
+        <input required class="form-control" type="datetime-local" name="End">          
       </div>
       <div class="form-group">
-        <label for="Tasks/Resources"><b>Tasks (comma seperated):</b></label>
-        <input class="form-control" type="text" name="tasks" placeholder="Enter tasks">          
+        <label for="Tasks/Resources"><b>Tasks:</b></label>
+        <input class="form-control" type="text" name="tasks" placeholder="Enter tasks (comma seperated)">          
       </div>
       <div class ="form-group">
-        <input class="form-control" type="submit" value="Submit" style="width:150px;
+        <input class="form-control" type="submit" value="Submit" style="cursor:pointer;width:150px;
         margin-left:270px;margin-top:40px">
       </div>
   </form>
 
-  <!-- 		<form action="/meeting/create/" method="post">
-        {% csrf_token %} {% for field in form %}
-        <div class="form-group">
-            {{ field.errors }} {{ field.label_tag }} {{ field }}
-        </div>
-        {% endfor %}
-        <input type="submit" value="Submit" />
-    </form> -->
   </div>
 </div>
 {% endblock %}
