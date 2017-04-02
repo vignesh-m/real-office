@@ -81,6 +81,7 @@ def create(request):
         return render(request, 'create_meeting.html', {'user': request.user, 'room': r})
 
 
+
 def view_list(request):
 
     if(request.user.is_authenticated == False):
