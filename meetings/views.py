@@ -1,10 +1,8 @@
+import datetime
+
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
 from django.forms import ModelForm
 from django.utils import timezone
-import datetime
-from django.contrib.auth.models import User
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 
@@ -77,9 +75,8 @@ def create(request):
         return redirect('/meeting/success')
 
     else:
-        form = MeetingForm()
         r = Room.objects.all()
-        return render(request, 'create_meeting.html', {'user': request.user, 'form': form, 'room': r})
+        return render(request, 'create_meeting.html', {'user': request.user, 'room': r})
 
 
 @login_required
