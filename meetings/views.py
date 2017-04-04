@@ -38,3 +38,23 @@ def create(request):
 def view_list(request):
     html = ['<p>%s</p>' % str(m) for m in Meeting.objects.all()]
     return HttpResponse(html)
+
+# Vishwanath
+def report(request):
+	pass
+
+# Vishwanath
+def periodicReport(request):
+	pass
+
+# Vishwanath
+def adHocReport(request):
+	pass
+
+# Vishwanath
+def expenditureReport(request):
+	pass
+
+# Vishwanath
+def saveToPdf(request):
+	pass
