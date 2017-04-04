@@ -47,21 +47,26 @@ def view_list(request):
     return HttpResponse(html)
 
 # Vishwanath
+@login_required
 def report(request):
 	pass
 
 # Vishwanath
+@login_required
 def periodicReport(request):
 	pass
 
 # Vishwanath
+@login_required
 def adHocReport(request):
 	pass
 
 # Vishwanath
+@login_required
 def expenditureReport(request):
 	pass
 
 # Vishwanath
+@login_required
 def saveToPdf(request):
 	pass
