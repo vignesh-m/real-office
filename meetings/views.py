@@ -1,10 +1,11 @@
+import json
 import datetime
 
 from django.shortcuts import render, redirect
 from django.forms import ModelForm
-from django.utils import timezone
+from django.utils import timezone, dateparse
 from django.contrib.auth.decorators import login_required
-
+from django.core.exceptions import ValidationError
 
 from .models import Meeting
 from tasks.models import Task
@@ -16,14 +17,20 @@ def index(request):
     startdate = timezone.now()
     enddate = startdate + datetime.timedelta(days=5)
 
-    m = Meeting.objects.filter(start__range=[startdate, enddate]).order_by('start')
+    m = Meeting.objects.filter(
+        start__range=[startdate, enddate]).order_by('start')
 
-    t = Task.objects.filter(meeting__in=m, complete='False').order_by('meeting__start')
+    t = Task.objects.filter(
+        meeting__in=m, complete='False').order_by('meeting__start')
+    cm = json.dumps([meeting.to_fc_event()
+                     for meeting in Meeting.objects.all()])
+    # print(cm)
 
-    return render(request, 'index.html', {'user': request.user, 'meeting': m, 'task': t})
+    return render(request, 'index.html', {'user': request.user, 'meeting': m, 'task': t, 'cal_meetings': cm})
 
 
 class MeetingForm(ModelForm):
+
     class Meta:
         model = Meeting
         exclude = ['creatingStaff']
@@ -55,29 +62,35 @@ def create(request):
         m.creatingProfessor = form['CreatingProfessor']
         m.creatingStaff = request.user
         m.participants = form['Participants']
-        m.start = form['Start']
-        m.end = form['End']
+        m.start = timezone.make_aware(
+            dateparse.parse_datetime(form['Start']), timezone.get_default_timezone())
+        m.end = timezone.make_aware(
+            dateparse.parse_datetime(form['End']), timezone.get_default_timezone())
         ven = Room.objects.get(id=form['Venue'])
         m.venue = ven
-        m.save()
+        try:
+            m.full_clean()
+            m.save()
+            if(len(form['tasks']) > 0):
+                taskComma = form['tasks']
+                # taskComma = taskComma.replace(' ','')
+                taskList = taskComma.split(",")
 
-        if(len(form['tasks']) > 0):
-            taskComma = form['tasks']
-            # taskComma = taskComma.replace(' ','')
-            taskList = taskComma.split(",")
+                for task in taskList:
+                    if(len(task) > 0):
+                        t = Task()
+                        t.meeting = m
+                        t.name = task
+                        t.save()
 
-            for task in taskList:
-                if(len(task)>0):
-                    t = Task()
-                    t.meeting = m
-                    t.name = task
-                    t.save()
-
-        return render(request, 'meeting_success.html', {'msg': 'Created'})
+            return render(request, 'meeting_success.html', {'msg': 'Created'})
+        except ValidationError:
+            return render(request, 'meeting_success.html', {'msg': 'Invalid Meeting properties'})
 
     else:
         r = Room.objects.all()
         return render(request, 'create_meeting.html', {'user': request.user, 'room': r})
+
 
 @login_required
 def view_list(request):
@@ -92,12 +105,14 @@ def individual_meeting(request):
         x = (Meeting.objects.get(id=(meetid)))
         return render(request, 'individual_meeting.html', {'user': request.user, 'meeting': x})
 
+
 @login_required
 def delete(request):
     meetid = request.GET['meetid']
-    x = Meeting.objects.get(id = meetid)
+    x = Meeting.objects.get(id=meetid)
     x.delete()
-    return render(request, 'meeting_success.html', {'msg':'Deleted'})
+    return render(request, 'meeting_success.html', {'msg': 'Deleted'})
+
 
 @login_required
 def edit(request):
@@ -111,7 +126,7 @@ def edit(request):
         meetid = request.POST['meetid']
         m = Meeting.objects.get(id=meetid)
         oldtasks = Task.objects.filter(meeting=m)
-        
+
         m.name = form['Name']
         m.info = form['Info']
         m.creatingProfessor = form['CreatingProfessor']
@@ -133,7 +148,7 @@ def edit(request):
             taskList = taskComma.split(",")
 
             for task in taskList:
-                if(len(task)>0):
+                if(len(task) > 0):
                     t = Task()
                     t.meeting = m
                     t.name = task
@@ -149,42 +164,43 @@ def edit(request):
         l = len(t)
         # print 'len: ', l
         tasks = ''
-        for i,j in enumerate(t):
+        for i, j in enumerate(t):
             # print i,j
-            tasks += j.name 
-            if(i != l-1):
+            tasks += j.name
+            if(i != l - 1):
                 tasks += ', '
 
         # print(tasks)
         def formatdate(dt):
             start = ''
             start += str(dt.year) + '-'
-            if(len(str(dt.month))==1):
+            if(len(str(dt.month)) == 1):
                 start += '0' + str(dt.month) + '-'
             else:
                 start += str(dt.month) + '-'
-            if(len(str(dt.day))==1):
-                start += '0' + str(dt.day) 
+            if(len(str(dt.day)) == 1):
+                start += '0' + str(dt.day)
             else:
-                start += str(dt.day) 
+                start += str(dt.day)
             start += 'T'
-            if(len(str(dt.hour))==1):
+            if(len(str(dt.hour)) == 1):
                 start += '0' + str(dt.hour) + ':'
             else:
                 start += str(dt.hour) + ':'
-            if(len(str(dt.minute))==1):
-                start += '0' + str(dt.minute) 
+            if(len(str(dt.minute)) == 1):
+                start += '0' + str(dt.minute)
             else:
                 start += str(dt.minute)
 
             return start
 
-        s = formatdate(x.start + datetime.timedelta(hours=5,minutes=30))
-        e = formatdate(x.end + datetime.timedelta(hours=5,minutes=30))
+        s = formatdate(x.start + datetime.timedelta(hours=5, minutes=30))
+        e = formatdate(x.end + datetime.timedelta(hours=5, minutes=30))
         # print(x.start,x.end)
         # print(s,e)
 
         return render(request, 'edit.html', {'user': request.user, 'meeting': x, 'room': r, 'tasks': tasks, 's': s, 'e': e})
+
 
 @login_required
 def add_room(request):
