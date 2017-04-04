@@ -1,12 +1,11 @@
 import json
 import datetime
 
-
 from django.shortcuts import render, redirect
 from django.forms import ModelForm
-from django.utils import timezone
+from django.utils import timezone, dateparse
 from django.contrib.auth.decorators import login_required
-
+from django.core.exceptions import ValidationError
 
 from .models import Meeting
 from tasks.models import Task
@@ -63,25 +62,30 @@ def create(request):
         m.creatingProfessor = form['CreatingProfessor']
         m.creatingStaff = request.user
         m.participants = form['Participants']
-        m.start = form['Start']
-        m.end = form['End']
+        m.start = timezone.make_aware(
+            dateparse.parse_datetime(form['Start']), timezone.get_default_timezone())
+        m.end = timezone.make_aware(
+            dateparse.parse_datetime(form['End']), timezone.get_default_timezone())
         ven = Room.objects.get(id=form['Venue'])
         m.venue = ven
-        m.save()
+        try:
+            m.full_clean()
+            m.save()
+            if(len(form['tasks']) > 0):
+                taskComma = form['tasks']
+                # taskComma = taskComma.replace(' ','')
+                taskList = taskComma.split(",")
 
-        if(len(form['tasks']) > 0):
-            taskComma = form['tasks']
-            # taskComma = taskComma.replace(' ','')
-            taskList = taskComma.split(",")
+                for task in taskList:
+                    if(len(task) > 0):
+                        t = Task()
+                        t.meeting = m
+                        t.name = task
+                        t.save()
 
-            for task in taskList:
-                if(len(task) > 0):
-                    t = Task()
-                    t.meeting = m
-                    t.name = task
-                    t.save()
-
-        return render(request, 'meeting_success.html', {'msg': 'Created'})
+            return render(request, 'meeting_success.html', {'msg': 'Created'})
+        except ValidationError:
+            return render(request, 'meeting_success.html', {'msg': 'Invalid Meeting properties'})
 
     else:
         r = Room.objects.all()

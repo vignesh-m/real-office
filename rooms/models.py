@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils import timezone
 
 
 class Room(models.Model):
@@ -23,12 +24,17 @@ class Room(models.Model):
             # Returns True iff [st1, et1] intersects with [st2, et2]
             return (st1 <= st2 and et1 > st2) or (st2 <= st1 and et2 > st1)
 
+        def aware(dt):
+            # make datetime tz aware
+            if dt.tzinfo is None:
+                return timezone.make_aware(dt, timezone.get_default_timezone())
+            return dt
         # meetings = Meeting.objects.filter(venue=self)
         meetings = self.meeting_set.all()
         for m in meetings:
             if m == meeting:
                 continue
-            if is_clash(start_time, end_time, m.start, m.end):
+            if is_clash(start_time, end_time, aware(m.start), aware(m.end)):
                 return False
         return True
 
