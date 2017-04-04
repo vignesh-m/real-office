@@ -26,7 +26,8 @@ class Meeting(models.Model):
     # Vishwanath: To store the participants in text form
     def store_participants(self, participantList):
         delimiter = " "
-        self.participants = delimiter.join(participantList)  # list -> string
+        if isinstance(participantList, list):
+            self.participants = delimiter.join(participantList)  # list -> string
 
     # Vishwanath: to get the participants in a list form
     def get_participants(self):
