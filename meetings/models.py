@@ -35,3 +35,14 @@ class Meeting(models.Model):
 
     # def clean(self):
         # ensure room is not booked
+
+    def to_fc_event(self):
+        # convert to format required by caledar
+        m = {
+            'id': self.id,
+            'title': self.name + ' at ' + str(self.venue),
+            'start': self.start.isoformat(),
+            'end': self.end.isoformat(),
+
+        }
+        return m
