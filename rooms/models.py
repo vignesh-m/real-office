@@ -13,9 +13,11 @@ class Room(models.Model):
     def __str__(self):
         return self.name
 
-    def is_free(self, start_time, end_time):
+    def is_free(self, start_time, end_time, meeting=None):
         # Returns True if this room is free to use between start_time and
         # end_time, False otherwise
+        # If meeting provided, excludes this meeting from consideration -
+        # used when we want to check if given meeting clashes
 
         def is_clash(st1, et1, st2, et2):
             # Returns True iff [st1, et1] intersects with [st2, et2]
@@ -24,6 +26,8 @@ class Room(models.Model):
         # meetings = Meeting.objects.filter(venue=self)
         meetings = self.meeting_set.all()
         for m in meetings:
+            if m == meeting:
+                continue
             if is_clash(start_time, end_time, m.start, m.end):
                 return False
         return True
