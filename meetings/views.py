@@ -29,6 +29,30 @@ def index(request):
     return render(request, 'index.html', {'user': request.user, 'meeting': m, 'task': t, 'cal_meetings': cm})
 
 
+@login_required
+def search_meeting(request):
+    if(request.method == 'POST'):
+        # print request.POST
+        m = Meeting.objects.all()
+        name = request.POST.get('Name')
+        if(name !=  None):
+            m = m.filter(name__contains=name)
+        dt = request.POST.get('date')
+        if(dt != None and len(dt) > 0):
+            date = datetime.datetime.strptime(dt, "%Y-%m-%d").date()
+            date1 = date + datetime.timedelta(days=1)
+            m = m.filter(start__range=[date, date1])
+        # print m
+        return render(request, 'view_meeting.html', {'user':request.user, 'meeting': m})
+
+    return render(request, 'search.html')
+
+@login_required
+def task_done(request):
+    print request.POST
+    return redirect('/')
+
+
 class MeetingForm(ModelForm):
 
     class Meta:
@@ -78,7 +102,7 @@ def create(request):
 
     tm = formatdate(timezone.now() + datetime.timedelta(hours=5, minutes=30))
 
-    if request.method == 'POST':
+    if(request.method == 'POST'):
         # print(request.POST)
         form = request.POST
         m = Meeting()
@@ -108,7 +132,7 @@ def create(request):
                         t.name = task
                         t.save()
 
-            return render(request, 'meeting_success.html', {'msg': 'Meeting Successfully Created'})
+            return render(request, 'meeting_success.html', {'user': request.user, 'msg': 'Meeting Successfully Created'})
         except ValidationError:
             r = Room.objects.all()
             return render(request, 'meeting_success1.html', {'user': request.user, 'meeting': m, 'room': r, 'tasks': form['tasks'], 's': tm, 'e': tm})
