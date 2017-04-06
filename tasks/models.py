@@ -8,6 +8,7 @@ class Task(models.Model):
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     name = models.CharField(max_length=1000)
     complete = models.BooleanField(default=False)
+    cost = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
