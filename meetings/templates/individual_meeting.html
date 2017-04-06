@@ -1,0 +1,50 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+
+<style>
+.button {
+    background-color: #bcc4d1;
+    border: none;
+    color: black;
+    padding: 11px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+</style>
+
+{% comment %}<div class="w3-main" style="margin-left:250px">{% endcomment %}
+    <div class="w3-row w3-padding-64">
+        <div class="w3-twothird w3-container">
+            <h1 class="w3-text-teal" style="margin-bottom:15px">Meeting Details</h1>
+            <b>Name</b>
+            <p>{{meeting.name}}</p>
+            <b>Info</b>
+            <p>{{meeting.info}}</p>
+            <b>Participants</b>
+            <p>{{meeting.participants}}</p>
+            <b>Start</b>
+            <p>{{meeting.start}}</p>
+            <b>End</b>
+            <p>{{meeting.end}}</p>
+            <b>Venue</b>
+            <p>{{meeting.venue}}</p>
+            <b>Creating Professor</b>
+            <p>{{meeting.creatingProfessor}}</p>
+            <b>Creating Staff</b>
+            <p>{{meeting.creatingStaff.first_name}}</p>
+        </div>
+    </div>
+    <div class="w3-row w3-padding-64">
+    <div class="w3-twothird w3-container">
+          <div style="margin-top:-90px;margin-left:250px">
+            <a href="/meeting/edit?meetid={{meeting.id}}" class="button" style="text-align:center;width:100px" >Edit</a>
+            <a href="/meeting/delete?meetid={{meeting.id}}" class="button" style="margin-left:30px;text-align:center;width:100px" >Delete</a>
+          </div>
+    </div>
+    </div>
+
+{% comment %}</div>{% endcomment %}
+{% endblock %}

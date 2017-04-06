@@ -1,10 +1,67 @@
-{% extends 'base.html' %} {% block content %} {% load static %}
-<form action="/meeting/create/" method="post">
-    {% csrf_token %} {% for field in form %}
-    <div class="form-group">
-        {{ field.errors }} {{ field.label_tag }} {{ field }}
-    </div>
-    {% endfor %}
-    <input type="submit" value="Submit" />
-</form>
+{% extends 'base.html' %} 
+{% block content %} 
+{% load static %}
+<div class="w3-row w3-padding-64">
+  <div class="w3-twothird w3-container">
+
+  <form action="/meeting/create/" method="post">
+      <div class="form-group">
+        <label for="name"><b>*Name:</b></label>
+        <input type="text" required class="form-control" name="Name" placeholder="Enter Meeting Name">          
+      </div>
+      <div class="form-group">
+        <label for="info"><b>*Meeting Information:</b></label>
+        <input type="text" required class="form-control" name="Info" placeholder="Enter Meeting Information">          
+      </div>
+      <div class="form-group">
+        <label for="CreatingProfessor"><b>Creating Professor:</b></label>
+        <input type="text" class="form-control" name="CreatingProfessor" placeholder="Enter Professor's name">          
+      </div>
+      <div class="form-group">
+        <label for="Participants"><b>Participants:</b></label>
+        <input type="text" class="form-control" name="Participants" placeholder="Enter list of Participants">          
+      </div>
+      <div class="form-group">
+        <label for="Venue"><b>*Venue:</b></label>
+        {% csrf_token %} 
+        <select name="Venue" class="form-control">
+          {% for x in room %}
+          <option value="{{x.id}}">{{x.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="checkbox">
+        <label for="Resources"><b>Resources needed:</b></label><br>
+        <input type="checkbox" name="hasProjector" value="projector"> Projector<br>
+        <input type="checkbox" name="hasMic" value="mic"> Microphone<br>
+        <input type="checkbox" name="hasAC" value="ac"> Air-Conditioning<br><br>
+      </div>
+      <div class="form-group">
+        <label for="Capacity"><b>Room Capacity needed:</b></label>
+        <input type="text" class="form-control" name="capacity" placeholder="Enter needed room capacity">          
+      </div>
+      <div class ="form-group">
+        <input class="form-control" type="button" value="Get Suggestions" style="cursor:pointer;width:250px;
+        margin-left:0px;margin-top:40px">
+      </div><br>
+      <div class="form-group">
+        <label for="Start"><b>*Start date and time:</b></label>
+        <input required class="form-control" type="datetime-local" name="Start">          
+      </div>
+      <div class="form-group">
+        <label for="End"><b>*End date and time:</b></label>
+        <input required class="form-control" type="datetime-local" name="End">          
+      </div>
+      <div class="form-group">
+        <label for="Tasks/Resources"><b>Tasks:</b></label>
+        <input class="form-control" type="text" name="tasks" placeholder="Enter tasks (comma seperated)">          
+      </div>
+      <div class ="form-group">
+        <input class="form-control" type="submit" value="Submit" style="cursor:pointer;width:150px;
+        margin-left:270px;margin-top:40px">
+      </div>
+  </form>
+
+  </div>
+</div>
 {% endblock %}

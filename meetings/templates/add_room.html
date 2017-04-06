@@ -1,0 +1,31 @@
+{% extends 'base.html' %} 
+{% block content %} 
+{% load static %}
+<div class="w3-row w3-padding-64">
+  <div class="w3-twothird w3-container">
+
+  <form action="/meeting/add_room/" method="post">
+      {% csrf_token %} 
+      <div class="form-group">
+        <label for="name"><b>*Name:</b></label>
+        <input type="text" required class="form-control" name="Name" placeholder="Enter Room Name">          
+      </div>
+      <div class="checkbox">
+        <label for="Resources"><b>Resources needed:</b></label><br>
+        <input type="checkbox" name="hasProjector" value="true" checked> Projector<br>
+        <input type="checkbox" name="hasMic" value="true" checked> Microphone<br>
+        <input type="checkbox" name="hasAC" value="true"> Air-Conditioning<br><br>
+      </div>
+      <div class="form-group">
+        <label for="Capacity"><b>*Room Capacity:</b></label>
+        <input type="text" class="form-control" required name="capacity" placeholder="Enter room capacity">          
+      </div>
+      <div class ="form-group">
+        <input class="form-control" type="submit" value="Submit" style="cursor:pointer;width:150px;
+        margin-left:270px;margin-top:40px">
+      </div>
+  </form>
+
+  </div>
+</div>
+{% endblock %}

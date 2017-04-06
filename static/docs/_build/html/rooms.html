@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>rooms package &#8212; real-office 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="rooms-package">
+<h1>rooms package<a class="headerlink" href="#rooms-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rooms.migrations.html">rooms.migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rooms.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rooms.migrations.html#module-rooms.migrations.0001_initial">rooms.migrations.0001_initial module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rooms.migrations.html#module-rooms.migrations.0002_auto_20170316_1838">rooms.migrations.0002_auto_20170316_1838 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rooms.migrations.html#module-rooms.migrations.0003_room_capacity">rooms.migrations.0003_room_capacity module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rooms.migrations.html#module-rooms.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-rooms.admin">
+<span id="rooms-admin-module"></span><h2>rooms.admin module<a class="headerlink" href="#module-rooms.admin" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-rooms.apps">
+<span id="rooms-apps-module"></span><h2>rooms.apps module<a class="headerlink" href="#module-rooms.apps" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rooms.apps.RoomsConfig">
+<em class="property">class </em><code class="descclassname">rooms.apps.</code><code class="descname">RoomsConfig</code><span class="sig-paren">(</span><em>app_name</em>, <em>app_module</em><span class="sig-paren">)</span><a class="headerlink" href="#rooms.apps.RoomsConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.apps.config.AppConfig</span></code></p>
+<dl class="attribute">
+<dt id="rooms.apps.RoomsConfig.name">
+<code class="descname">name</code><em class="property"> = 'rooms'</em><a class="headerlink" href="#rooms.apps.RoomsConfig.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rooms.models">
+<span id="rooms-models-module"></span><h2>rooms.models module<a class="headerlink" href="#module-rooms.models" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rooms.models.Room">
+<em class="property">class </em><code class="descclassname">rooms.models.</code><code class="descname">Room</code><span class="sig-paren">(</span><em>id</em>, <em>name</em>, <em>hasProjector</em>, <em>hasAC</em>, <em>hasMic</em>, <em>capacity</em><span class="sig-paren">)</span><a class="headerlink" href="#rooms.models.Room" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></code></p>
+<dl class="exception">
+<dt id="rooms.models.Room.DoesNotExist">
+<em class="property">exception </em><code class="descname">DoesNotExist</code><a class="headerlink" href="#rooms.models.Room.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="rooms.models.Room.MultipleObjectsReturned">
+<em class="property">exception </em><code class="descname">MultipleObjectsReturned</code><a class="headerlink" href="#rooms.models.Room.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rooms.models.Room.capacity">
+<code class="descname">capacity</code><a class="headerlink" href="#rooms.models.Room.capacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="rooms.models.Room.get_available">
+<em class="property">classmethod </em><code class="descname">get_available</code><span class="sig-paren">(</span><em>start_time</em>, <em>end_time</em><span class="sig-paren">)</span><a class="headerlink" href="#rooms.models.Room.get_available" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rooms.models.Room.hasAC">
+<code class="descname">hasAC</code><a class="headerlink" href="#rooms.models.Room.hasAC" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rooms.models.Room.hasMic">
+<code class="descname">hasMic</code><a class="headerlink" href="#rooms.models.Room.hasMic" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rooms.models.Room.hasProjector">
+<code class="descname">hasProjector</code><a class="headerlink" href="#rooms.models.Room.hasProjector" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rooms.models.Room.id">
+<code class="descname">id</code><a class="headerlink" href="#rooms.models.Room.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rooms.models.Room.is_free">
+<code class="descname">is_free</code><span class="sig-paren">(</span><em>start_time</em>, <em>end_time</em>, <em>meeting=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rooms.models.Room.is_free" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rooms.models.Room.meeting_set">
+<code class="descname">meeting_set</code><a class="headerlink" href="#rooms.models.Room.meeting_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">parent.children</span></code> is a <code class="docutils literal"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rooms.models.Room.name">
+<code class="descname">name</code><a class="headerlink" href="#rooms.models.Room.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rooms.models.Room.objects">
+<code class="descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#rooms.models.Room.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rooms.tests">
+<span id="rooms-tests-module"></span><h2>rooms.tests module<a class="headerlink" href="#module-rooms.tests" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rooms.tests.RoomClashTestCase">
+<em class="property">class </em><code class="descclassname">rooms.tests.</code><code class="descname">RoomClashTestCase</code><span class="sig-paren">(</span><em>methodName='runTest'</em><span class="sig-paren">)</span><a class="headerlink" href="#rooms.tests.RoomClashTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.test.testcases.TestCase</span></code></p>
+<dl class="method">
+<dt id="rooms.tests.RoomClashTestCase.setUp">
+<code class="descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rooms.tests.RoomClashTestCase.setUp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rooms.tests.RoomClashTestCase.test_free">
+<code class="descname">test_free</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rooms.tests.RoomClashTestCase.test_free" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rooms.tests.RoomClashTestCase.test_room_available">
+<code class="descname">test_room_available</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rooms.tests.RoomClashTestCase.test_room_available" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rooms.views">
+<span id="rooms-views-module"></span><h2>rooms.views module<a class="headerlink" href="#module-rooms.views" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-rooms">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rooms" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">rooms package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-rooms.admin">rooms.admin module</a></li>
+<li><a class="reference internal" href="#module-rooms.apps">rooms.apps module</a></li>
+<li><a class="reference internal" href="#module-rooms.models">rooms.models module</a></li>
+<li><a class="reference internal" href="#module-rooms.tests">rooms.tests module</a></li>
+<li><a class="reference internal" href="#module-rooms.views">rooms.views module</a></li>
+<li><a class="reference internal" href="#module-rooms">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/rooms.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, real-office team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/rooms.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

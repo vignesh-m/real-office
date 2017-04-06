@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+
+<style>
+.button {
+    background-color: #bcc4d1;
+    border: none;
+    color: black;
+    padding: 13px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+</style>
+
+<!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+
+  <div class="w3-row w3-padding-64">
+    <div class="w3-twothird w3-container">
+      <h1 class="w3-text-teal">List of Meetings</h1>
+        {% csrf_token %} {% for field in meeting %}
+          <div >
+            <a href="/meeting/individual_meeting?meetid={{field.id}}" class="button" style="text-align:left;width:1000px" >{{field.id}}. {{field.name}}, {{field.venue}}, {{field.start}}</a>
+          </div>
+        {% endfor %}      
+    </div>
+  </div>
+
+{% endblock %}

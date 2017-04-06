@@ -62,7 +62,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+# docs/_build/
 
 # PyBuilder
 target/
@@ -93,5 +93,7 @@ py3/
 
 # Rope project settings
 .ropeproject
+
+prem-realoffice/
 
 tags

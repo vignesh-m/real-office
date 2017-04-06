@@ -3,6 +3,7 @@ appnope==0.1.0
 decorator==4.0.11
 Django==1.10.6
 django-extensions==1.7.7
+gunicorn==19.7.1
 ipython==5.3.0
 ipython-genutils==0.2.0
 packaging==16.8
@@ -16,3 +17,4 @@ simplegeneric==0.8.1
 six==1.10.0
 traitlets==4.3.2
 wcwidth==0.1.7
+whitenoise==3.3.0
