@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^edit/$', views.edit, name='edit'),
     url(r'^individual_meeting/$', views.individual_meeting,
         name='individual_meeting'),
+    url(r'^available_rooms/$', views.available_rooms, name='available_rooms'),
 ]

@@ -2,6 +2,7 @@ import json
 import datetime
 
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.forms import ModelForm
 from django.utils import timezone, dateparse
 from django.contrib.auth.decorators import login_required
@@ -66,6 +67,7 @@ def create(request):
             dateparse.parse_datetime(form['Start']), timezone.get_default_timezone())
         m.end = timezone.make_aware(
             dateparse.parse_datetime(form['End']), timezone.get_default_timezone())
+        print(form['Start'], form['End'])
         ven = Room.objects.get(id=form['Venue'])
         m.venue = ven
         try:
@@ -228,3 +230,26 @@ def add_room(request):
         return redirect('/')
 
     return render(request, 'add_room.html')
+
+
+@login_required
+def available_rooms(request):
+    # Get available rooms from time start to end
+    all_rooms = Room.objects.all()
+    try:
+        start = timezone.make_aware(
+            dateparse.parse_datetime(request.GET['start']), timezone.get_default_timezone())
+        end = timezone.make_aware(
+            dateparse.parse_datetime(request.GET['end']), timezone.get_default_timezone())
+        sugg = [{"id": r.id, "name": r.name}
+                for r in all_rooms if r.is_free(start, end)]
+        rest = [{"id": r.id, "name": r.name}
+                for r in all_rooms if not r.is_free(start, end)]
+    except Exception:
+        sugg = [{"id": r.id, "name": r.name}
+                for r in Room.objects.all()]
+        rest = []
+    return HttpResponse(json.dumps({
+        "suggested": sugg,
+        "rest": rest
+    }))
