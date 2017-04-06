@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>meetings.migrations package &#8212; real-office 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="rooms package" href="rooms.html" />
+    <link rel="prev" title="meetings package" href="meetings.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="meetings-migrations-package">
+<h1>meetings.migrations package<a class="headerlink" href="#meetings-migrations-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-meetings.migrations.0001_initial">
+<span id="meetings-migrations-0001-initial-module"></span><h2>meetings.migrations.0001_initial module<a class="headerlink" href="#module-meetings.migrations.0001_initial" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="meetings.migrations.0001_initial.Migration">
+<em class="property">class </em><code class="descclassname">meetings.migrations.0001_initial.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="headerlink" href="#meetings.migrations.0001_initial.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="meetings.migrations.0001_initial.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = []</em><a class="headerlink" href="#meetings.migrations.0001_initial.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="meetings.migrations.0001_initial.Migration.initial">
+<code class="descname">initial</code><em class="property"> = True</em><a class="headerlink" href="#meetings.migrations.0001_initial.Migration.initial" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="meetings.migrations.0001_initial.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;CreateModel  fields=[('id', &lt;django.db.models.fields.AutoField&gt;), ('name', &lt;django.db.models.fields.CharField&gt;)], name='Meeting'&gt;]</em><a class="headerlink" href="#meetings.migrations.0001_initial.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-meetings.migrations.0002_auto_20170316_1838">
+<span id="meetings-migrations-0002-auto-20170316-1838-module"></span><h2>meetings.migrations.0002_auto_20170316_1838 module<a class="headerlink" href="#module-meetings.migrations.0002_auto_20170316_1838" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="meetings.migrations.0002_auto_20170316_1838.Migration">
+<em class="property">class </em><code class="descclassname">meetings.migrations.0002_auto_20170316_1838.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="headerlink" href="#meetings.migrations.0002_auto_20170316_1838.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="meetings.migrations.0002_auto_20170316_1838.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = [('auth', '__first__'), ('rooms', '0002_auto_20170316_1838'), ('meetings', '0001_initial')]</em><a class="headerlink" href="#meetings.migrations.0002_auto_20170316_1838.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="meetings.migrations.0002_auto_20170316_1838.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;AddField  field=&lt;django.db.models.fields.CharField&gt;, model_name='meeting', name='creatingProfessor'&gt;, &lt;AddField  field=&lt;django.db.models.fields.related.ForeignKey&gt;, model_name='meeting', name='creatingStaff'&gt;, &lt;AddField  field=&lt;django.db.models.fields.DateTimeField&gt;, model_name='meeting', name='end'&gt;, &lt;AddField  field=&lt;django.db.models.fields.TextField&gt;, model_name='meeting', name='info'&gt;, &lt;AddField  field=&lt;django.db.models.fields.TextField&gt;, model_name='meeting', name='participants'&gt;, &lt;AddField  field=&lt;django.db.models.fields.DateTimeField&gt;, model_name='meeting', name='start'&gt;, &lt;AddField  field=&lt;django.db.models.fields.related.ForeignKey&gt;, model_name='meeting', name='venue'&gt;, &lt;AlterField  field=&lt;django.db.models.fields.CharField&gt;, model_name='meeting', name='name'&gt;]</em><a class="headerlink" href="#meetings.migrations.0002_auto_20170316_1838.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-meetings.migrations.0003_auto_20170328_0528">
+<span id="meetings-migrations-0003-auto-20170328-0528-module"></span><h2>meetings.migrations.0003_auto_20170328_0528 module<a class="headerlink" href="#module-meetings.migrations.0003_auto_20170328_0528" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="meetings.migrations.0003_auto_20170328_0528.Migration">
+<em class="property">class </em><code class="descclassname">meetings.migrations.0003_auto_20170328_0528.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="headerlink" href="#meetings.migrations.0003_auto_20170328_0528.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="meetings.migrations.0003_auto_20170328_0528.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = [('meetings', '0002_auto_20170316_1838')]</em><a class="headerlink" href="#meetings.migrations.0003_auto_20170328_0528.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="meetings.migrations.0003_auto_20170328_0528.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;AlterField  field=&lt;django.db.models.fields.TextField&gt;, model_name='meeting', name='participants'&gt;]</em><a class="headerlink" href="#meetings.migrations.0003_auto_20170328_0528.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-meetings.migrations.0004_auto_20170404_1722">
+<span id="meetings-migrations-0004-auto-20170404-1722-module"></span><h2>meetings.migrations.0004_auto_20170404_1722 module<a class="headerlink" href="#module-meetings.migrations.0004_auto_20170404_1722" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="meetings.migrations.0004_auto_20170404_1722.Migration">
+<em class="property">class </em><code class="descclassname">meetings.migrations.0004_auto_20170404_1722.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="headerlink" href="#meetings.migrations.0004_auto_20170404_1722.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="meetings.migrations.0004_auto_20170404_1722.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = [('meetings', '0003_auto_20170328_0528')]</em><a class="headerlink" href="#meetings.migrations.0004_auto_20170404_1722.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="meetings.migrations.0004_auto_20170404_1722.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;AlterField  field=&lt;django.db.models.fields.related.ForeignKey&gt;, model_name='meeting', name='creatingStaff'&gt;, &lt;AlterField  field=&lt;django.db.models.fields.related.ForeignKey&gt;, model_name='meeting', name='venue'&gt;]</em><a class="headerlink" href="#meetings.migrations.0004_auto_20170404_1722.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-meetings.migrations">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-meetings.migrations" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">meetings.migrations package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-meetings.migrations.0001_initial">meetings.migrations.0001_initial module</a></li>
+<li><a class="reference internal" href="#module-meetings.migrations.0002_auto_20170316_1838">meetings.migrations.0002_auto_20170316_1838 module</a></li>
+<li><a class="reference internal" href="#module-meetings.migrations.0003_auto_20170328_0528">meetings.migrations.0003_auto_20170328_0528 module</a></li>
+<li><a class="reference internal" href="#module-meetings.migrations.0004_auto_20170404_1722">meetings.migrations.0004_auto_20170404_1722 module</a></li>
+<li><a class="reference internal" href="#module-meetings.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="meetings.html">meetings package</a><ul>
+      <li>Previous: <a href="meetings.html" title="previous chapter">meetings package</a></li>
+      <li>Next: <a href="rooms.html" title="next chapter">rooms package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/meetings.migrations.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, real-office team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/meetings.migrations.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
