@@ -53,6 +53,31 @@ def create(request):
     #                          'Login to Create Meetings')
     #     # return HttpResponseRedirect('/login', request=request)
     #     return redirect('login')
+    def formatdate(dt):
+        start = ''
+        start += str(dt.year) + '-'
+        if(len(str(dt.month)) == 1):
+            start += '0' + str(dt.month) + '-'
+        else:
+            start += str(dt.month) + '-'
+        if(len(str(dt.day)) == 1):
+            start += '0' + str(dt.day)
+        else:
+            start += str(dt.day)
+        start += 'T'
+        if(len(str(dt.hour)) == 1):
+            start += '0' + str(dt.hour) + ':'
+        else:
+            start += str(dt.hour) + ':'
+        if(len(str(dt.minute)) == 1):
+            start += '0' + str(dt.minute)
+        else:
+            start += str(dt.minute)
+
+        return start
+
+    tm = formatdate(timezone.now() + datetime.timedelta(hours=5, minutes=30))
+
     if request.method == 'POST':
         # print(request.POST)
         form = request.POST
@@ -83,13 +108,14 @@ def create(request):
                         t.name = task
                         t.save()
 
-            return render(request, 'meeting_success.html', {'msg': 'Created'})
+            return render(request, 'meeting_success.html', {'msg': 'Meeting Successfully Created'})
         except ValidationError:
-            return render(request, 'meeting_success.html', {'msg': 'Invalid Meeting properties'})
+            r = Room.objects.all()
+            return render(request, 'meeting_success1.html', {'user': request.user, 'meeting': m, 'room': r, 'tasks': form['tasks'], 's': tm, 'e': tm})
 
     else:
         r = Room.objects.all()
-        return render(request, 'create_meeting.html', {'user': request.user, 'room': r})
+        return render(request, 'create_meeting.html', {'user': request.user, 'room': r, 's': tm, 'e': tm})
 
 
 @login_required
@@ -111,13 +137,36 @@ def delete(request):
     meetid = request.GET['meetid']
     x = Meeting.objects.get(id=meetid)
     x.delete()
-    return render(request, 'meeting_success.html', {'msg': 'Deleted'})
+    return render(request, 'meeting_success.html', {'user': request.user, 'msg': 'Meeting Successfully Deleted'})
 
 
 @login_required
 def edit(request):
     # if(request.user.is_authenticated == False):
     #     return redirect('/login')
+
+    def formatdate(dt):
+        start = ''
+        start += str(dt.year) + '-'
+        if(len(str(dt.month)) == 1):
+            start += '0' + str(dt.month) + '-'
+        else:
+            start += str(dt.month) + '-'
+        if(len(str(dt.day)) == 1):
+            start += '0' + str(dt.day)
+        else:
+            start += str(dt.day)
+        start += 'T'
+        if(len(str(dt.hour)) == 1):
+            start += '0' + str(dt.hour) + ':'
+        else:
+            start += str(dt.hour) + ':'
+        if(len(str(dt.minute)) == 1):
+            start += '0' + str(dt.minute)
+        else:
+            start += str(dt.minute)
+
+        return start
 
     if (request.method == 'POST'):
         # print(request.POST)
@@ -136,25 +185,34 @@ def edit(request):
         m.end = form['End']
         ven = Room.objects.get(id=form['Venue'])
         m.venue = ven
-        m.save()
 
-        for i in oldtasks:
-            # print('deleting...')
-            i.delete()
+        try:
+            m.full_clean()
+            m.save()
 
-        if(len(form['tasks']) > 0):
-            taskComma = form['tasks']
-            # taskComma = taskComma.replace(' ','')
-            taskList = taskComma.split(",")
+            for i in oldtasks:
+                # print('deleting...')
+                i.delete()
 
-            for task in taskList:
-                if(len(task) > 0):
-                    t = Task()
-                    t.meeting = m
-                    t.name = task
-                    t.save()
+            if(len(form['tasks']) > 0):
+                taskComma = form['tasks']
+                # taskComma = taskComma.replace(' ','')
+                taskList = taskComma.split(",")
 
-        return render(request, 'meeting_success.html', {'msg': 'Modified'})
+                for task in taskList:
+                    if(len(task) > 0):
+                        t = Task()
+                        t.meeting = m
+                        t.name = task
+                        t.save()
+
+            return render(request, 'meeting_success.html', {'user': request.user, 'msg': 'Meeting Successfully Modified'})
+
+        except ValidationError:
+            r = Room.objects.all()
+            s = formatdate(m.start)
+            e = formatdate(m.end)            
+            return render(request, 'edit.html', {'msg': 'Room Unavailable at the Time. Try again.', 'user': request.user, 'meeting': m, 'room': r, 'tasks': form['tasks'], 's': s, 'e': e})
 
     else:
         meetid = request.GET['meetid']
@@ -170,36 +228,14 @@ def edit(request):
             if(i != l - 1):
                 tasks += ', '
 
-        # print(tasks)
-        def formatdate(dt):
-            start = ''
-            start += str(dt.year) + '-'
-            if(len(str(dt.month)) == 1):
-                start += '0' + str(dt.month) + '-'
-            else:
-                start += str(dt.month) + '-'
-            if(len(str(dt.day)) == 1):
-                start += '0' + str(dt.day)
-            else:
-                start += str(dt.day)
-            start += 'T'
-            if(len(str(dt.hour)) == 1):
-                start += '0' + str(dt.hour) + ':'
-            else:
-                start += str(dt.hour) + ':'
-            if(len(str(dt.minute)) == 1):
-                start += '0' + str(dt.minute)
-            else:
-                start += str(dt.minute)
-
-            return start
-
         s = formatdate(x.start + datetime.timedelta(hours=5, minutes=30))
         e = formatdate(x.end + datetime.timedelta(hours=5, minutes=30))
+
+        # print(tasks)
         # print(x.start,x.end)
         # print(s,e)
 
-        return render(request, 'edit.html', {'user': request.user, 'meeting': x, 'room': r, 'tasks': tasks, 's': s, 'e': e})
+        return render(request, 'edit.html', {'msg':'none', 'user': request.user, 'meeting': x, 'room': r, 'tasks': tasks, 's': s, 'e': e})
 
 
 @login_required
@@ -227,4 +263,4 @@ def add_room(request):
         r.save()
         return redirect('/')
 
-    return render(request, 'add_room.html')
+    return render(request, 'add_room.html', {'user': request.user})
