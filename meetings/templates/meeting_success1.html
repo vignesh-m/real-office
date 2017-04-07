@@ -3,10 +3,8 @@
 {% load static %}
 <div class="w3-row w3-padding-64">
   <div class="w3-twothird w3-container">
-    {% if msg != 'none' %}
-      <h3 class="w3-text-teal" style="margin-bottom:15px">Room Unavailable at the time. Try again.</h3> <br>
-    {% endif %}
-  <form action="/meeting/edit/" method="post">
+    <h3 class="w3-text-teal" style="margin-bottom:15px">Room Unavailable at the time. Try again.</h3>
+  <form action="/meeting/create/" method="post">
       <div class="form-group">
         <label for="name"><b>*Name:</b></label>
         <input type="text" required class="form-control" value="{{meeting.name}}" name="Name" placeholder="Enter Meeting Name">          
@@ -41,9 +39,6 @@
         <input type="checkbox" name="hasProjector" value="projector"> Projector<br>
         <input type="checkbox" name="hasMic" value="mic"> Microphone<br>
         <input type="checkbox" name="hasAC" value="ac"> Air-Conditioning<br><br>
-      </div>
-      <div class="form-group">
-        <input type="hidden" class="form-control" name="meetid" value="{{meeting.id}}">          
       </div>
       <div class="form-group">
         <label for="Capacity"><b>Room Capacity needed:</b></label>

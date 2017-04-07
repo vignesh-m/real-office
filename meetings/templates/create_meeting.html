@@ -47,12 +47,16 @@
       </div><br>
       <div class="form-group">
         <label for="Start"><b>*Start date and time:</b></label>
-        <input required id='start' class="form-control" type="datetime-local" name="Start">          
+        <input required id='start' class="form-control" value="{{s}}" type="datetime-local" name="Start">          
       </div>
       <div class="form-group">
         <label for="End"><b>*End date and time:</b></label>
-        <input required id='end' class="form-control" type="datetime-local" name="End">          
+        <input required id='end' class="form-control" value="{{s}}" type="datetime-local" name="End">          
       </div>
+      <div class ="form-group">
+        <input class="form-control" type="button" value="Get Suggestions" style="cursor:pointer;width:250px;
+        margin-left:0px;margin-top:40px">
+      </div><br>
       <div class="form-group">
         <label for="Tasks/Resources"><b>Tasks:</b></label>
         <input class="form-control" type="text" name="tasks" placeholder="Enter tasks (comma seperated)">          
