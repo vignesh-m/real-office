@@ -314,3 +314,18 @@ def available_rooms(request):
         "suggested": sugg,
         "rest": rest
     }))
+
+
+@login_required
+def get_notifications(request):
+    startdate = timezone.now()
+    enddate = startdate + datetime.timedelta(minutes=15)
+
+    due_meetings = Meeting.objects.filter(
+        start__range=[startdate, enddate]).order_by('start')
+
+    notifs = [{
+        "meeting": {"name": m.name, "id": m.id},
+        "time": (m.start - startdate).seconds // 60
+    } for m in due_meetings]
+    return HttpResponse(json.dumps(notifs))

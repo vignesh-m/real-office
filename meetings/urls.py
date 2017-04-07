@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^individual_meeting/$', views.individual_meeting,
         name='individual_meeting'),
     url(r'^available_rooms/$', views.available_rooms, name='available_rooms'),
+    url(r'^get_notifications/$', views.get_notifications, name='get_notifications'),
 ]
