@@ -41,10 +41,6 @@
         <label for="Capacity"><b>Room Capacity needed:</b></label>
         <input type="text" class="form-control" name="capacity" placeholder="Enter needed room capacity">          
       </div>
-      <div class ="form-group">
-        <input class="form-control" type="button" value="Get Suggestions" style="cursor:pointer;width:250px;
-        margin-left:0px;margin-top:40px" onclick="get_available_rooms()">
-      </div><br>
       <div class="form-group">
         <label for="Start"><b>*Start date and time:</b></label>
         <input required id='start' class="form-control" value="{{s}}" type="datetime-local" name="Start">          
@@ -55,7 +51,7 @@
       </div>
       <div class ="form-group">
         <input class="form-control" type="button" value="Get Suggestions" style="cursor:pointer;width:250px;
-        margin-left:0px;margin-top:40px">
+        margin-left:0px;margin-top:40px" onclick="get_available_rooms()">
       </div><br>
       <div class="form-group">
         <label for="Tasks/Resources"><b>Tasks:</b></label>
