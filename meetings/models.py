@@ -20,6 +20,7 @@ class Meeting(models.Model):
     end = models.DateTimeField(default=timezone.now)
     venue = models.ForeignKey(
         'rooms.Room', on_delete=models.SET_NULL, null=True, blank=True)
+    expenditure = models.IntegerField(default=0)
 
     def __str__(self):
         return '%s on %s at %s' % (self.name, self.start, self.venue)

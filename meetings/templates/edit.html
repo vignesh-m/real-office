@@ -3,7 +3,9 @@
 {% load static %}
 <div class="w3-row w3-padding-64">
   <div class="w3-twothird w3-container">
-
+    {% if msg != 'none' %}
+      <h3 class="w3-text-teal" style="margin-bottom:15px">Room Unavailable at the time. Try again.</h3> <br>
+    {% endif %}
   <form action="/meeting/edit/" method="post">
       <div class="form-group">
         <label for="name"><b>*Name:</b></label>
@@ -47,10 +49,6 @@
         <label for="Capacity"><b>Room Capacity needed:</b></label>
         <input type="text" class="form-control" name="capacity" placeholder="Enter needed room capacity">          
       </div>
-      <div class ="form-group">
-        <input class="form-control" type="button" value="Get Suggestions" style="cursor:pointer;width:250px;
-        margin-left:0px;margin-top:40px">
-      </div><br>
       <div class="form-group">
         <label for="Start"><b>*Start date and time:</b></label>
         <input required class="form-control" value="{{s}}" type="datetime-local" name="Start">          
@@ -58,10 +56,13 @@
       <div class="form-group">
         <label for="End"><b>*End date and time:</b></label>
         <input required class="form-control" value="{{e}}" type="datetime-local" name="End">          
-      </div>
+      </div>      <div class ="form-group">
+        <input class="form-control" type="button" value="Get Suggestions" style="cursor:pointer;width:250px;
+        margin-left:0px;margin-top:40px">
+      </div><br>
       <div class="form-group">
         <label for="Tasks/Resources"><b>Tasks:</b></label>
-        <input class="form-control" type="text" value="{{tasks}}" name="tasks" placeholder="Enter tasks (comma seperated)">          
+        <input class="form-control" type="text" value="{{tasks}}" name="tasks" placeholder="Enter tasks (comma seperated)">
       </div>
       <div class ="form-group">
         <input class="form-control" type="submit" value="Submit" style="cursor:pointer;width:150px;

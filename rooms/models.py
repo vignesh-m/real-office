@@ -34,7 +34,7 @@ class Room(models.Model):
         for m in meetings:
             if m == meeting:
                 continue
-            if is_clash(start_time, end_time, aware(m.start), aware(m.end)):
+            if is_clash(aware(start_time), aware(end_time), aware(m.start), aware(m.end)):
                 return False
         return True
 

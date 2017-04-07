@@ -3,30 +3,34 @@
 {% load static %}
 <div class="w3-row w3-padding-64">
   <div class="w3-twothird w3-container">
-
+    <h3 class="w3-text-teal" style="margin-bottom:15px">Room Unavailable at the time. Try again.</h3>
   <form action="/meeting/create/" method="post">
       <div class="form-group">
         <label for="name"><b>*Name:</b></label>
-        <input type="text" required class="form-control" name="Name" placeholder="Enter Meeting Name">          
+        <input type="text" required class="form-control" value="{{meeting.name}}" name="Name" placeholder="Enter Meeting Name">          
       </div>
       <div class="form-group">
         <label for="info"><b>*Meeting Information:</b></label>
-        <input type="text" required class="form-control" name="Info" placeholder="Enter Meeting Information">          
+        <input type="text" required class="form-control" value="{{meeting.info}}" name="Info" placeholder="Enter Meeting Information">          
       </div>
       <div class="form-group">
         <label for="CreatingProfessor"><b>Creating Professor:</b></label>
-        <input type="text" class="form-control" name="CreatingProfessor" placeholder="Enter Professor's name">          
+        <input type="text" class="form-control" value="{{meeting.creatingProfessor}}" name="CreatingProfessor" placeholder="Enter Professor's name">          
       </div>
       <div class="form-group">
         <label for="Participants"><b>Participants:</b></label>
-        <input type="text" class="form-control" name="Participants" placeholder="Enter list of Participants">          
+        <input type="text" class="form-control" value="{{meeting.participants}}" name="Participants" placeholder="Enter list of Participants">          
       </div>
       <div class="form-group">
         <label for="Venue"><b>*Venue:</b></label>
         {% csrf_token %} 
-        <select name="Venue" class="form-control">
+        <select name="Venue" class="form-control" >
           {% for x in room %}
-          <option value="{{x.id}}">{{x.name}}</option>
+          {% if x.id != meeting.venue.id %}
+            <option value="{{x.id}}">{{x.name}}</option>
+          {% else %}
+            <option value="{{x.id}}" selected="selected">{{x.name}}</option>            
+          {% endif %}
           {% endfor %}
         </select>
       </div>
@@ -46,15 +50,14 @@
       </div>
       <div class="form-group">
         <label for="End"><b>*End date and time:</b></label>
-        <input required class="form-control" value="{{s}}" type="datetime-local" name="End">          
-      </div>
-      <div class ="form-group">
+        <input required class="form-control" value="{{e}}" type="datetime-local" name="End">          
+      </div>      <div class ="form-group">
         <input class="form-control" type="button" value="Get Suggestions" style="cursor:pointer;width:250px;
         margin-left:0px;margin-top:40px">
       </div><br>
       <div class="form-group">
         <label for="Tasks/Resources"><b>Tasks:</b></label>
-        <input class="form-control" type="text" name="tasks" placeholder="Enter tasks (comma seperated)">          
+        <input class="form-control" type="text" value="{{tasks}}" name="tasks" placeholder="Enter tasks (comma seperated)">
       </div>
       <div class ="form-group">
         <input class="form-control" type="submit" value="Submit" style="cursor:pointer;width:150px;
