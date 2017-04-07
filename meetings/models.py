@@ -45,11 +45,13 @@ class Meeting(models.Model):
 
     def to_fc_event(self):
         # convert to format required by caledar
+        def default_tz(dt):
+            return dt.astimezone(timezone.get_default_timezone()).isoformat()
         m = {
             'id': self.id,
             'title': self.name + ' at ' + str(self.venue),
-            'start': self.start.isoformat(),
-            'end': self.end.isoformat(),
+            'start': default_tz(self.start),
+            'end': default_tz(self.end),
 
         }
         return m
