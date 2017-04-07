@@ -33,3 +33,5 @@ function get_available_rooms() {
         }
     });
 }
+
+$(document).ready(get_available_rooms);
