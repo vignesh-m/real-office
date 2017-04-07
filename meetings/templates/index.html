@@ -72,6 +72,10 @@
           left:   'title',
           center: '',
           right:  'today prev,next'
+      },
+      eventClick: function(event, jse, view){
+        console.log('clicked event ',event.id);
+        window.open('/meeting/individual_meeting/?meetid='+event.id);
       }
     })
   });

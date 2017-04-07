@@ -2,6 +2,7 @@ import json
 import datetime
 
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.forms import ModelForm
 from django.utils import timezone, dateparse
 from django.contrib.auth.decorators import login_required
@@ -35,7 +36,7 @@ def search_meeting(request):
         # print request.POST
         m = Meeting.objects.all()
         name = request.POST.get('Name')
-        if(name !=  None):
+        if(name != None):
             m = m.filter(name__contains=name)
         dt = request.POST.get('date')
         if(dt != None and len(dt) > 0):
@@ -43,13 +44,14 @@ def search_meeting(request):
             date1 = date + datetime.timedelta(days=1)
             m = m.filter(start__range=[date, date1])
         # print m
-        return render(request, 'view_meeting.html', {'user':request.user, 'meeting': m})
+        return render(request, 'view_meeting.html', {'user': request.user, 'meeting': m})
 
     return render(request, 'search.html')
 
+
 @login_required
 def task_done(request):
-    print request.POST
+    # print request.POST
     return redirect('/')
 
 
@@ -115,6 +117,7 @@ def create(request):
             dateparse.parse_datetime(form['Start']), timezone.get_default_timezone())
         m.end = timezone.make_aware(
             dateparse.parse_datetime(form['End']), timezone.get_default_timezone())
+        print(form['Start'], form['End'])
         ven = Room.objects.get(id=form['Venue'])
         m.venue = ven
         try:
@@ -235,7 +238,7 @@ def edit(request):
         except ValidationError:
             r = Room.objects.all()
             s = formatdate(m.start)
-            e = formatdate(m.end)            
+            e = formatdate(m.end)
             return render(request, 'edit.html', {'msg': 'Room Unavailable at the Time. Try again.', 'user': request.user, 'meeting': m, 'room': r, 'tasks': form['tasks'], 's': s, 'e': e})
 
     else:
@@ -259,7 +262,7 @@ def edit(request):
         # print(x.start,x.end)
         # print(s,e)
 
-        return render(request, 'edit.html', {'msg':'none', 'user': request.user, 'meeting': x, 'room': r, 'tasks': tasks, 's': s, 'e': e})
+        return render(request, 'edit.html', {'msg': 'none', 'user': request.user, 'meeting': x, 'room': r, 'tasks': tasks, 's': s, 'e': e})
 
 
 @login_required
@@ -288,3 +291,26 @@ def add_room(request):
         return redirect('/')
 
     return render(request, 'add_room.html', {'user': request.user})
+
+
+@login_required
+def available_rooms(request):
+    # Get available rooms from time start to end
+    all_rooms = Room.objects.all()
+    try:
+        start = timezone.make_aware(
+            dateparse.parse_datetime(request.GET['start']), timezone.get_default_timezone())
+        end = timezone.make_aware(
+            dateparse.parse_datetime(request.GET['end']), timezone.get_default_timezone())
+        sugg = [{"id": r.id, "name": r.name}
+                for r in all_rooms if r.is_free(start, end)]
+        rest = [{"id": r.id, "name": r.name}
+                for r in all_rooms if not r.is_free(start, end)]
+    except Exception:
+        sugg = [{"id": r.id, "name": r.name}
+                for r in Room.objects.all()]
+        rest = []
+    return HttpResponse(json.dumps({
+        "suggested": sugg,
+        "rest": rest
+    }))
