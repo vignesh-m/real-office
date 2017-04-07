@@ -35,7 +35,7 @@ def search_meeting(request):
         # print request.POST
         m = Meeting.objects.all()
         name = request.POST.get('Name')
-        if(name !=  None):
+        if(name != None):
             m = m.filter(name__contains=name)
         dt = request.POST.get('date')
         if(dt != None and len(dt) > 0):
@@ -43,13 +43,14 @@ def search_meeting(request):
             date1 = date + datetime.timedelta(days=1)
             m = m.filter(start__range=[date, date1])
         # print m
-        return render(request, 'view_meeting.html', {'user':request.user, 'meeting': m})
+        return render(request, 'view_meeting.html', {'user': request.user, 'meeting': m})
 
     return render(request, 'search.html')
 
+
 @login_required
 def task_done(request):
-    print request.POST
+    # print request.POST
     return redirect('/')
 
 
@@ -235,7 +236,7 @@ def edit(request):
         except ValidationError:
             r = Room.objects.all()
             s = formatdate(m.start)
-            e = formatdate(m.end)            
+            e = formatdate(m.end)
             return render(request, 'edit.html', {'msg': 'Room Unavailable at the Time. Try again.', 'user': request.user, 'meeting': m, 'room': r, 'tasks': form['tasks'], 's': s, 'e': e})
 
     else:
@@ -259,7 +260,7 @@ def edit(request):
         # print(x.start,x.end)
         # print(s,e)
 
-        return render(request, 'edit.html', {'msg':'none', 'user': request.user, 'meeting': x, 'room': r, 'tasks': tasks, 's': s, 'e': e})
+        return render(request, 'edit.html', {'msg': 'none', 'user': request.user, 'meeting': x, 'room': r, 'tasks': tasks, 's': s, 'e': e})
 
 
 @login_required
