@@ -1,3 +1,6 @@
 .fc-event-container{
     cursor:pointer;
 }
+.w3-top{
+    z-index: 10;
+}
