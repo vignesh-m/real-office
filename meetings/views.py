@@ -136,7 +136,8 @@ def create(request):
                         t.save()
 
             return render(request, 'meeting_success.html', {'user': request.user, 'msg': 'Meeting Successfully Created'})
-        except ValidationError:
+        except ValidationError as e:
+            print(e)
             r = Room.objects.all()
             return render(request, 'meeting_success1.html', {'user': request.user, 'meeting': m, 'room': r, 'tasks': form['tasks'], 's': tm, 'e': tm})
 
@@ -296,17 +297,40 @@ def add_room(request):
 @login_required
 def available_rooms(request):
     # Get available rooms from time start to end
+    # print(request.GET)
     all_rooms = Room.objects.all()
     try:
         start = timezone.make_aware(
             dateparse.parse_datetime(request.GET['start']), timezone.get_default_timezone())
         end = timezone.make_aware(
             dateparse.parse_datetime(request.GET['end']), timezone.get_default_timezone())
+        need_proj = request.GET['has_proj'] == 'true'
+        need_ac = request.GET['has_ac'] == 'true'
+        need_mic = request.GET['has_mic'] == 'true'
+        try:
+            capacity = int(request.GET['capacity'])
+        except ValueError:
+            capacity = 0
+
+        def is_ok(room):
+            # return room.is_free(start, end)
+            if not room.is_free(start, end):
+                return False
+            if need_ac and not room.hasAC:
+                return False
+            if need_proj and not room.hasProjector:
+                return False
+            if need_mic and not room.hasMic:
+                return False
+            if room.capacity < capacity:
+                return False
+            return True
         sugg = [{"id": r.id, "name": r.name}
-                for r in all_rooms if r.is_free(start, end)]
+                for r in all_rooms if is_ok(r)]
         rest = [{"id": r.id, "name": r.name}
-                for r in all_rooms if not r.is_free(start, end)]
-    except Exception:
+                for r in all_rooms if not is_ok(r)]
+    except Exception as e:
+        print(e)
         sugg = [{"id": r.id, "name": r.name}
                 for r in Room.objects.all()]
         rest = []

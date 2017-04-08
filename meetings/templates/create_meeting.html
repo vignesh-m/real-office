@@ -19,7 +19,7 @@
         <input type="text" class="form-control" name="CreatingProfessor" placeholder="Enter Professor's name">          
       </div>
       <div class="form-group">
-        <label for="Participants"><b>Participants:</b></label>
+        <label for="Participants"><b>*Participants:</b></label>
         <input type="text" class="form-control" name="Participants" placeholder="Enter list of Participants">          
       </div>
       <div class="form-group">
@@ -33,13 +33,13 @@
       </div>
       <div class="checkbox">
         <label for="Resources"><b>Resources needed:</b></label><br>
-        <input type="checkbox" name="hasProjector" value="projector"> Projector<br>
-        <input type="checkbox" name="hasMic" value="mic"> Microphone<br>
-        <input type="checkbox" name="hasAC" value="ac"> Air-Conditioning<br><br>
+        <input type="checkbox" id='has-projector' name="hasProjector" value="projector"> Projector<br>
+        <input type="checkbox" id='has-mic' name="hasMic" value="mic"> Microphone<br>
+        <input type="checkbox" id='has-ac' name="hasAC" value="ac"> Air-Conditioning<br><br>
       </div>
       <div class="form-group">
         <label for="Capacity"><b>Room Capacity needed:</b></label>
-        <input type="text" class="form-control" name="capacity" placeholder="Enter needed room capacity">          
+        <input id='capacity' type="text" class="form-control" name="capacity" placeholder="Enter needed room capacity">          
       </div>
       <div class="form-group">
         <label for="Start"><b>*Start date and time:</b></label>
