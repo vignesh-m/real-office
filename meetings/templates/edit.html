@@ -1,6 +1,7 @@
 {% extends 'base.html' %} 
 {% block content %} 
 {% load static %}
+<script src="/static/room_getter.js"> </script>
 <div class="w3-row w3-padding-64">
   <div class="w3-twothird w3-container">
     {% if msg != 'none' %}
@@ -20,13 +21,13 @@
         <input type="text" class="form-control" value="{{meeting.creatingProfessor}}" name="CreatingProfessor" placeholder="Enter Professor's name">          
       </div>
       <div class="form-group">
-        <label for="Participants"><b>Participants:</b></label>
-        <input type="text" class="form-control" value="{{meeting.participants}}" name="Participants" placeholder="Enter list of Participants">          
+        <label for="Participants"><b>*Participants:</b></label>
+        <input required type="text" class="form-control" value="{{meeting.participants}}" name="Participants" placeholder="Enter list of Participants">          
       </div>
       <div class="form-group">
         <label for="Venue"><b>*Venue:</b></label>
         {% csrf_token %} 
-        <select name="Venue" class="form-control" >
+        <select name="Venue" class="form-control" id="venue-select">
           {% for x in room %}
           {% if x.id != meeting.venue.id %}
             <option value="{{x.id}}">{{x.name}}</option>
@@ -38,27 +39,28 @@
       </div>
       <div class="checkbox">
         <label for="Resources"><b>Resources needed:</b></label><br>
-        <input type="checkbox" name="hasProjector" value="projector"> Projector<br>
-        <input type="checkbox" name="hasMic" value="mic"> Microphone<br>
-        <input type="checkbox" name="hasAC" value="ac"> Air-Conditioning<br><br>
+        <input type="checkbox" id="has-projector" name="hasProjector" value="projector"> Projector<br>
+        <input type="checkbox" id="has-mic" name="hasMic" value="mic"> Microphone<br>
+        <input type="checkbox" id="has-ac" name="hasAC" value="ac"> Air-Conditioning<br><br>
       </div>
       <div class="form-group">
         <input type="hidden" class="form-control" name="meetid" value="{{meeting.id}}">          
       </div>
       <div class="form-group">
         <label for="Capacity"><b>Room Capacity needed:</b></label>
-        <input type="text" class="form-control" name="capacity" placeholder="Enter needed room capacity">          
+        <input type="text" class="form-control" id="capacity" name="capacity" placeholder="Enter needed room capacity">          
       </div>
       <div class="form-group">
         <label for="Start"><b>*Start date and time:</b></label>
-        <input required class="form-control" value="{{s}}" type="datetime-local" name="Start">          
+        <input required id="start" class="form-control" value="{{s}}" type="datetime-local" name="Start">          
       </div>
       <div class="form-group">
         <label for="End"><b>*End date and time:</b></label>
-        <input required class="form-control" value="{{e}}" type="datetime-local" name="End">          
-      </div>      <div class ="form-group">
+        <input required id="end" class="form-control" value="{{e}}" type="datetime-local" name="End">          
+      </div>      
+      <div class ="form-group">
         <input class="form-control" type="button" value="Get Suggestions" style="cursor:pointer;width:250px;
-        margin-left:0px;margin-top:40px">
+        margin-left:0px;margin-top:40px" onclick="get_available_rooms()">
       </div><br>
       <div class="form-group">
         <label for="Tasks/Resources"><b>Tasks:</b></label>

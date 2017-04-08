@@ -40,7 +40,7 @@ class Meeting(models.Model):
         if not self.venue.is_free(self.start, self.end, self):
             raise ValidationError('room clash')
         # ensure start < end
-        if self.start > self.end:
+        if self.start >= self.end:
             raise ValidationError('meeting start must be before end')
 
     def to_fc_event(self):

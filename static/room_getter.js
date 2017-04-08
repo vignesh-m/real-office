@@ -8,15 +8,16 @@ function get_available_rooms() {
     vs = $('#venue-select');
     params = $.param({
         'start': start,
-        end: end,
-        has_proj: has_proj,
-        has_ac: has_ac,
-        has_mic: has_mic,
-        capacity: capacity
+        'end': end,
+        'has_proj': has_proj,
+        'has_ac': has_ac,
+        'has_mic': has_mic,
+        'capacity': capacity
     });
     $.get({
         url: 'http://localhost:8000/meeting/available_rooms/?'+params,
         success: function (data) {
+            console.log('enter');
             data = JSON.parse(data);
             vs.empty();
             l = data.suggested;
