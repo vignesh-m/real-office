@@ -31,19 +31,23 @@ td, th {
       </tr>
       {% csrf_token %} {% for field in meeting %}
         <tr>
-          <th>{{field.name}}</th>
-          <th>{{field.info}}</th>
-          <th>{{field.creatingProfessor}}</th>
-          <th>{{field.venue}}</th>
-          <th>{{field.start}}</th>
-          <th>{{field.participants}}</th>
-          <th>{{field.expenditure}}</th>
+          <td>{{field.name}}</td>
+          <td>{{field.info}}</td>
+          <td>{{field.creatingProfessor}}</td>
+          <td>{{field.venue}}</td>
+          <td>{{field.start}}</td>
+          <td>{{field.participants}}</td>
+          <td>{{field.expenditure}}</td>
         </tr>
       {% endfor %}      
     </table>
     <br>
     <br>
-    <h4 class="w3-text-teal" style="margin-bottom:15px">Total Expenditure = {{total}}</h4>    
+    <h4 class="w3-text-teal" style="margin-bottom:15px">Total Expenditure = {{total}}</h4>
+    <br><br>    
+<!--     <div>
+    <a style="margin-left:80px" href="//FreeHTMLtoPDF.com/?convert&iconsize=32"><img src="//FreeHTMLtoPDF.com/images/apiicon_32.png" /></a><script type="text/javascript" src="//FreeHTMLtoPDF.com/scripts/api.js" />
+    </div> -->
   </div>
 </div>
 {% endblock %}
