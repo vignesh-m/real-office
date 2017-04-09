@@ -2,7 +2,7 @@ import smtplib
 from email.mime.text import MIMEText
 
 
-def send_mail(recepients, messages):
+def send_mail(recepients, messages, subject):
     # send mail from realoffice ID
     fro = 'realoffice.iitm@gmail.com'
     fro_pass = 'IITMCSE2014'
@@ -11,10 +11,11 @@ def send_mail(recepients, messages):
     server.starttls()
     server.login(fro, fro_pass)
 
-    for to, msg in zip(recepients, messages):
-        msg = MIMEText(msg)
+    for to in (recepients):
+        msg = MIMEText(messages)
         msg['From'] = fro
         msg['To'] = to
+        msg['Subject'] = subject
 
         server.sendmail(fro, [to], msg.as_string())
 
