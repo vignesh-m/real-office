@@ -42,7 +42,7 @@ def search_meeting(request):
         if(dt != None and len(dt) > 0):
             date = datetime.datetime.strptime(dt, "%Y-%m-%d").date()
             date1 = date + datetime.timedelta(days=1)
-            m = m.filter(start__range=[date, date1])
+            m = m.filter(start__range=[date, date1]).order_by('start')
         # print m
         return render(request, 'view_meeting.html', {'user': request.user, 'meeting': m})
 
@@ -136,7 +136,8 @@ def create(request):
                         t.save()
 
             return render(request, 'meeting_success.html', {'user': request.user, 'msg': 'Meeting Successfully Created'})
-        except ValidationError:
+        except ValidationError as e:
+            print(e)
             r = Room.objects.all()
             return render(request, 'meeting_success1.html', {'user': request.user, 'meeting': m, 'room': r, 'tasks': form['tasks'], 's': tm, 'e': tm})
 
@@ -152,11 +153,44 @@ def view_list(request):
 
 
 @login_required
+def report(request):
+    if(request.method == 'POST'):
+        # print request.POST
+        m = Meeting.objects.all()
+        name = request.POST.get('Name')
+        if(name != None):
+            m = m.filter(name__contains=name)
+        dt = request.POST.get('start')
+        dt1 = request.POST.get('end')
+        if(dt != None and len(dt) > 0):
+            date = datetime.datetime.strptime(dt, "%Y-%m-%d").date()
+        if(dt1 != None and len(dt1)>0):
+            date1 = datetime.datetime.strptime(dt1, "%Y-%m-%d").date()
+
+        m = m.filter(start__range=[date, date1]).order_by('start')
+        total = 0
+        for i in m:
+            total += i.expenditure
+        return render(request, 'report2.html', {'user': request.user, 'meeting': m, 'start': date, 'end': date1, 'total': total})
+
+    return render(request, 'report1.html')
+
+@login_required
 def individual_meeting(request):
     if (request.method == 'GET'):
         meetid = request.GET['meetid']
         x = (Meeting.objects.get(id=(meetid)))
-        return render(request, 'individual_meeting.html', {'user': request.user, 'meeting': x})
+        t = Task.objects.filter(meeting=x)
+        l = len(t)
+        # print 'len: ', l
+        tasks = ''
+        for i, j in enumerate(t):
+            # print i,j
+            tasks += j.name
+            if(i != l - 1):
+                tasks += ', '
+
+        return render(request, 'individual_meeting.html', {'user': request.user, 'meeting': x, 'tasks': tasks})
 
 
 @login_required
@@ -296,17 +330,40 @@ def add_room(request):
 @login_required
 def available_rooms(request):
     # Get available rooms from time start to end
+    # print(request.GET)
     all_rooms = Room.objects.all()
     try:
         start = timezone.make_aware(
             dateparse.parse_datetime(request.GET['start']), timezone.get_default_timezone())
         end = timezone.make_aware(
             dateparse.parse_datetime(request.GET['end']), timezone.get_default_timezone())
+        need_proj = request.GET['has_proj'] == 'true'
+        need_ac = request.GET['has_ac'] == 'true'
+        need_mic = request.GET['has_mic'] == 'true'
+        try:
+            capacity = int(request.GET['capacity'])
+        except ValueError:
+            capacity = 0
+
+        def is_ok(room):
+            # return room.is_free(start, end)
+            if not room.is_free(start, end):
+                return False
+            if need_ac and not room.hasAC:
+                return False
+            if need_proj and not room.hasProjector:
+                return False
+            if need_mic and not room.hasMic:
+                return False
+            if room.capacity < capacity:
+                return False
+            return True
         sugg = [{"id": r.id, "name": r.name}
-                for r in all_rooms if r.is_free(start, end)]
+                for r in all_rooms if is_ok(r)]
         rest = [{"id": r.id, "name": r.name}
-                for r in all_rooms if not r.is_free(start, end)]
-    except Exception:
+                for r in all_rooms if not is_ok(r)]
+    except Exception as e:
+        print(e)
         sugg = [{"id": r.id, "name": r.name}
                 for r in Room.objects.all()]
         rest = []
@@ -314,3 +371,18 @@ def available_rooms(request):
         "suggested": sugg,
         "rest": rest
     }))
+
+
+@login_required
+def get_notifications(request):
+    startdate = timezone.now()
+    enddate = startdate + datetime.timedelta(minutes=15)
+
+    due_meetings = Meeting.objects.filter(
+        start__range=[startdate, enddate]).order_by('start')
+
+    notifs = [{
+        "meeting": {"name": m.name, "id": m.id},
+        "time": (m.start - startdate).seconds // 60
+    } for m in due_meetings]
+    return HttpResponse(json.dumps(notifs))

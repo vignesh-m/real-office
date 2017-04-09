@@ -65,6 +65,7 @@
 
 <script>
   $(document).ready(function() {
+    // setup calendat
     $('#calendar').fullCalendar({
       defaultView: 'agendaWeek',
       events: {{ cal_meetings | safe}},
@@ -77,6 +78,17 @@
         console.log('clicked event ',event.id);
         window.open('/meeting/individual_meeting/?meetid='+event.id);
       }
+    })
+
+    // get notifications
+    $.get('/meeting/get_notifications/', function(data){
+      data = JSON.parse(data);
+      for(var i=0; i<data.length; i++){
+        var notif = data[i];
+        var notif_str = "Meeting "+ notif.meeting.name+" in "+notif.time +" minutes.";
+        new Notification("Upcoming Meeting",{"body":notif_str})
+      }
+      console.log(data);
     })
   });
 </script>
