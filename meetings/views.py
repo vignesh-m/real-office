@@ -52,8 +52,21 @@ def search_meeting(request):
 @login_required
 def task_done(request):
     # print request.POST
-    return redirect('/')
+    for key in request.POST:
+        if(key != 'csrfmiddlewaretoken'):
+            t = Task.objects.get(id = key)
+            value = request.POST[key]
+            if(len(value)>0):
+                # print 'yes'
+                t.complete = True
+                t.cost = int(value)
+                m = t.meeting
+                m.expenditure += int(value)
+                m.save()
+                t.save() 
+                # print t.meeting.expenditure
 
+    return redirect('/')
 
 class MeetingForm(ModelForm):
 
@@ -173,7 +186,8 @@ def report(request):
             total += i.expenditure
         return render(request, 'report2.html', {'user': request.user, 'meeting': m, 'start': date, 'end': date1, 'total': total})
 
-    return render(request, 'report1.html')
+    return render(request, 'report1.html', {'user': request.user})
+
 
 @login_required
 def individual_meeting(request):
@@ -191,7 +205,6 @@ def individual_meeting(request):
                 tasks += ', '
 
         return render(request, 'individual_meeting.html', {'user': request.user, 'meeting': x, 'tasks': tasks})
-
 
 @login_required
 def delete(request):
@@ -249,16 +262,19 @@ def edit(request):
 
         try:
             m.full_clean()
-            m.save()
-
-            for i in oldtasks:
-                # print('deleting...')
-                i.delete()
 
             if(len(form['tasks']) > 0):
                 taskComma = form['tasks']
                 # taskComma = taskComma.replace(' ','')
                 taskList = taskComma.split(",")
+
+                for i in oldtasks:
+                    # print('deleting...')
+                    if(i.name not in taskList):
+                        m.expenditure -= i.cost
+                        i.delete()
+                    else:
+                        taskList.remove(i.name)
 
                 for task in taskList:
                     if(len(task) > 0):
@@ -267,6 +283,12 @@ def edit(request):
                         t.name = task
                         t.save()
 
+            else:
+                for i in oldtasks:
+                    m.expenditure -= i.cost
+                    i.delete()
+
+            m.save()
             return render(request, 'meeting_success.html', {'user': request.user, 'msg': 'Meeting Successfully Modified'})
 
         except ValidationError:
@@ -287,7 +309,7 @@ def edit(request):
             # print i,j
             tasks += j.name
             if(i != l - 1):
-                tasks += ', '
+                tasks += ','
 
         s = formatdate(x.start + datetime.timedelta(hours=5, minutes=30))
         e = formatdate(x.end + datetime.timedelta(hours=5, minutes=30))
