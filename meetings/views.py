@@ -188,6 +188,7 @@ def report(request):
 
     return render(request, 'report1.html', {'user': request.user})
 
+
 @login_required
 def individual_meeting(request):
     if (request.method == 'GET'):
@@ -261,16 +262,19 @@ def edit(request):
 
         try:
             m.full_clean()
-            m.save()
-
-            for i in oldtasks:
-                # print('deleting...')
-                i.delete()
 
             if(len(form['tasks']) > 0):
                 taskComma = form['tasks']
                 # taskComma = taskComma.replace(' ','')
                 taskList = taskComma.split(",")
+
+                for i in oldtasks:
+                    # print('deleting...')
+                    if(i.name not in taskList):
+                        m.expenditure -= i.cost
+                        i.delete()
+                    else:
+                        taskList.remove(i.name)
 
                 for task in taskList:
                     if(len(task) > 0):
@@ -279,6 +283,12 @@ def edit(request):
                         t.name = task
                         t.save()
 
+            else:
+                for i in oldtasks:
+                    m.expenditure -= i.cost
+                    i.delete()
+
+            m.save()
             return render(request, 'meeting_success.html', {'user': request.user, 'msg': 'Meeting Successfully Modified'})
 
         except ValidationError:
@@ -299,7 +309,7 @@ def edit(request):
             # print i,j
             tasks += j.name
             if(i != l - 1):
-                tasks += ', '
+                tasks += ','
 
         s = formatdate(x.start + datetime.timedelta(hours=5, minutes=30))
         e = formatdate(x.end + datetime.timedelta(hours=5, minutes=30))

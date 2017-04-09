@@ -52,7 +52,7 @@
       <form action="/meeting/task_done/" method="post">
       {% csrf_token %} {% for field in task %}
       <div class ="form-group">
-        <input type="text" name="{{field.id}}" placeholder="Enter incurred cost"> {{field.id}}. {{field.name}}, {{field.meeting.name}}, {{field.meeting.start}} 
+        <input type="text" name="{{field.id}}" placeholder="Enter incurred cost"> {{field.id}}. {{field.name}}, {{field.meeting.venue.name}}, {{field.meeting.name}}, {{field.meeting.start}} 
       </div>
       {% endfor %}      
       <div class ="form-group">
