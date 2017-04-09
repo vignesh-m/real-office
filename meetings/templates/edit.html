@@ -24,19 +24,6 @@
         <label for="Participants"><b>*Participants:</b></label>
         <input required type="text" class="form-control" value="{{meeting.participants}}" name="Participants" placeholder="Enter list of Participants">          
       </div>
-      <div class="form-group">
-        <label for="Venue"><b>*Venue:</b></label>
-        {% csrf_token %} 
-        <select name="Venue" class="form-control" id="venue-select">
-          {% for x in room %}
-          {% if x.id != meeting.venue.id %}
-            <option value="{{x.id}}">{{x.name}}</option>
-          {% else %}
-            <option value="{{x.id}}" selected="selected">{{x.name}}</option>            
-          {% endif %}
-          {% endfor %}
-        </select>
-      </div>
       <div class="checkbox">
         <label for="Resources"><b>Resources needed:</b></label><br>
         <input type="checkbox" id="has-projector" name="hasProjector" value="projector"> Projector<br>
@@ -62,6 +49,19 @@
         <input class="form-control" type="button" value="Get Suggestions" style="cursor:pointer;width:250px;
         margin-left:0px;margin-top:40px" onclick="get_available_rooms()">
       </div><br>
+      <div class="form-group">
+        <label for="Venue"><b>*Venue:</b></label>
+        {% csrf_token %} 
+        <select name="Venue" class="form-control" id="venue-select">
+          {% for x in room %}
+          {% if x.id != meeting.venue.id %}
+            <option value="{{x.id}}">{{x.name}}</option>
+          {% else %}
+            <option value="{{x.id}}" selected="selected">{{x.name}}</option>            
+          {% endif %}
+          {% endfor %}
+        </select>
+      </div>
       <div class="form-group">
         <label for="Tasks/Resources"><b>Tasks:</b></label>
         <input class="form-control" type="text" value="{{tasks}}" name="tasks" placeholder="Enter tasks (comma seperated)">
