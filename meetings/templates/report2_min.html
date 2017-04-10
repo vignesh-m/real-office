@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title> {% block title %} Welcome to RealOffice {% endblock %} </title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.css'></link>
+    <link rel='stylesheet' href='/static/main.css'></link>
+    <!--<link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.print.css'></link>
+    -->
+</head>
+
+<body>
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        .w3-bar{
+            z-index: 2;
+        }
+    </style>
+    
+    <div class="w3-main" style="margin-left:10px">
+        {% load static %}
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 150%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 10px;
+}
+
+</style>
+
+    <h3 class="w3-text-teal" style="margin-bottom:15px">Meeting Report for {{start}} - {{end}}</h3>
+    <table style="width: 690px;">
+      <tr>
+        <th>Name</th>
+        <th>Info</th>
+        <th>Professor</th>
+        <th>Venue</th>
+        <th>Start</th>
+        <th>Participants</th>
+        <th>Expenditure</th>
+      </tr>
+      {% csrf_token %} {% for field in meeting %}
+        <tr>
+          <td>{{field.name}}</td>
+          <td>{{field.info}}</td>
+          <td>{{field.creatingProfessor}}</td>
+          <td>{{field.venue}}</td>
+          <td>{{field.start}}</td>
+          <td>{{field.participants}}</td>
+          <td>{{field.expenditure}}</td>
+        </tr>
+      {% endfor %}      
+    </table>
+    <br>
+    <br>
+    <h4 class="w3-text-teal" style="margin-bottom:15px">Total Expenditure = {{total}}</h4>
+    <br><br>    
+    
+
+    </div>
+    <script>
+        html2canvas(document.body, {
+            onrendered: function(canvas){
+                console.log('rendered');
+                contentDataURL = canvas.toDataURL('image/png')
+                var doc = new jsPDF()
+                doc.addImage(contentDataURL,'JPEG',20,20)
+                doc.save('meeting_report.pdf')
+            },
+            width: 700
+        })
+    
+    </script>
+</body>
+
+</html>

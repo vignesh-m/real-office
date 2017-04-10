@@ -54,19 +54,20 @@ def task_done(request):
     # print request.POST
     for key in request.POST:
         if(key != 'csrfmiddlewaretoken'):
-            t = Task.objects.get(id = key)
+            t = Task.objects.get(id=key)
             value = request.POST[key]
-            if(len(value)>0):
+            if(len(value) > 0):
                 # print 'yes'
                 t.complete = True
                 t.cost = int(value)
                 m = t.meeting
                 m.expenditure += int(value)
                 m.save()
-                t.save() 
+                t.save()
                 # print t.meeting.expenditure
 
     return redirect('/')
+
 
 class MeetingForm(ModelForm):
 
@@ -177,16 +178,43 @@ def report(request):
         dt1 = request.POST.get('end')
         if(dt != None and len(dt) > 0):
             date = datetime.datetime.strptime(dt, "%Y-%m-%d").date()
-        if(dt1 != None and len(dt1)>0):
+        if(dt1 != None and len(dt1) > 0):
             date1 = datetime.datetime.strptime(dt1, "%Y-%m-%d").date()
 
         m = m.filter(start__range=[date, date1]).order_by('start')
         total = 0
         for i in m:
             total += i.expenditure
-        return render(request, 'report2.html', {'user': request.user, 'meeting': m, 'start': date, 'end': date1, 'total': total})
+        return render(request, 'report2.html', {'user': request.user,
+                                                'meeting': m, 'start': date,
+                                                'end': date1, 'total': total,
+                                                'body': json.dumps(request.POST)})
 
     return render(request, 'report1.html', {'user': request.user})
+
+
+@login_required
+def report_pdf(request):
+    print(request.GET)
+    obj = json.loads(request.GET['report'])
+    m = Meeting.objects.all()
+    name = obj.get('Name')
+    if(name != None):
+        m = m.filter(name__contains=name)
+    dt = obj.get('start')
+    dt1 = obj.get('end')
+    if(dt != None and len(dt) > 0):
+        date = datetime.datetime.strptime(dt, "%Y-%m-%d").date()
+    if(dt1 != None and len(dt1) > 0):
+        date1 = datetime.datetime.strptime(dt1, "%Y-%m-%d").date()
+
+    m = m.filter(start__range=[date, date1]).order_by('start')
+    total = 0
+    for i in m:
+        total += i.expenditure
+    return render(request, 'report2_min.html', {'user': request.user,
+                                                'meeting': m, 'start': date,
+                                                'end': date1, 'total': total})
 
 
 @login_required
@@ -205,6 +233,7 @@ def individual_meeting(request):
                 tasks += ', '
 
         return render(request, 'individual_meeting.html', {'user': request.user, 'meeting': x, 'tasks': tasks})
+
 
 @login_required
 def delete(request):

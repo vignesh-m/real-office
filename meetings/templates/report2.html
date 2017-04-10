@@ -45,6 +45,13 @@ td, th {
     <br>
     <h4 class="w3-text-teal" style="margin-bottom:15px">Total Expenditure = {{total}}</h4>
     <br><br>    
+    <button onclick='genpdf()'> Generate PDF </button>
+    <script>
+      function genpdf(){
+        console.log('{{body | safe}}')
+        window.open('/meeting/report_pdf/?report={{body | safe}}')
+      }
+      </script>
 <!--     <div>
     <a style="margin-left:80px" href="//FreeHTMLtoPDF.com/?convert&iconsize=32"><img src="//FreeHTMLtoPDF.com/images/apiicon_32.png" /></a><script type="text/javascript" src="//FreeHTMLtoPDF.com/scripts/api.js" />
     </div> -->
