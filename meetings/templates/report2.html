@@ -27,7 +27,7 @@ td, th {
         <th>Venue</th>
         <th>Start</th>
         <th>Participants</th>
-        <th>Expenditure</th>
+        <th>Expenditure (Rs)</th>
       </tr>
       {% csrf_token %} {% for field in meeting %}
         <tr>
@@ -43,7 +43,7 @@ td, th {
     </table>
     <br>
     <br>
-    <h4 class="w3-text-teal" style="margin-bottom:15px">Total Expenditure = {{total}}</h4>
+    <h4 class="w3-text-teal" style="margin-bottom:15px">Total Expenditure = Rs. {{total}}</h4>
     <br><br>    
     <button onclick='genpdf()'> Generate PDF </button>
     <script>

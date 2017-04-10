@@ -11,6 +11,7 @@ from django.core.exceptions import ValidationError
 from .models import Meeting
 from tasks.models import Task
 from rooms.models import Room
+from util import send_mail
 
 
 @login_required
@@ -136,6 +137,12 @@ def create(request):
         m.venue = ven
         try:
             m.full_clean()
+            p = m.participants.replace(' ','').split(",")
+            sub = str(m.name) + " at " + str(m.venue.name) + " from " + str(m.start.strftime('%A %d %B %Y %H:%M hrs')) 
+            msg = "You are invited for this meeting. \nMeeting Details are as follows:\n" + str(m.info) + "\nPlease do attend."
+            # print sub
+            # print msg
+            send_mail(p, msg, sub)
             m.save()
             if(len(form['tasks']) > 0):
                 taskComma = form['tasks']
@@ -238,8 +245,25 @@ def individual_meeting(request):
 @login_required
 def delete(request):
     meetid = request.GET['meetid']
-    x = Meeting.objects.get(id=meetid)
-    x.delete()
+    m = Meeting.objects.get(id=meetid)
+    p = m.participants.replace(' ','').split(",")
+    sub = "CANCELLED | " + str(m.name) + " at " + str(m.venue.name) + " from " + str((m.start + datetime.timedelta(hours=5, minutes=30)).strftime('%A %d %B %Y %H:%M hrs'))  
+    msg = "Meeting has been CANCELLED. Meeting details are as follows:\n" + str(m.info) + "\nPlease be noted."
+    send_mail(p, msg, sub)    
+    t = Task.objects.filter(meeting=m)
+    l = len(t)
+    if(l > 0):
+        tasks = ''
+        for i, j in enumerate(t):
+            # print i,j
+            tasks += j.name
+            if(i != l - 1):
+                tasks += '\n'
+        p = [m.creatingStaff.email]
+        sub = "CANCEL the tasks | " + str(m.name) + " at " + str(m.venue.name) + " from " + str((m.start + datetime.timedelta(hours=5, minutes=30)).strftime('%A %d %B %Y %H:%M hrs'))
+        msg = "Please cancel the following tasks and get refund if already completed:\n" + tasks 
+        send_mail(p, msg, sub)
+    m.delete()
     return render(request, 'meeting_success.html', {'user': request.user, 'msg': 'Meeting Successfully Deleted'})
 
 
@@ -278,7 +302,7 @@ def edit(request):
         meetid = request.POST['meetid']
         m = Meeting.objects.get(id=meetid)
         oldtasks = Task.objects.filter(meeting=m)
-
+        sub1 = "MODIFIED | " + str(m.name) + " at " + str(m.venue.name) + " from " + str((m.start + datetime.timedelta(hours=5, minutes=30)).strftime('%A %d %B %Y %H:%M hrs'))
         m.name = form['Name']
         m.info = form['Info']
         m.creatingProfessor = form['CreatingProfessor']
@@ -292,6 +316,8 @@ def edit(request):
         try:
             m.full_clean()
 
+            tsk = ''
+
             if(len(form['tasks']) > 0):
                 taskComma = form['tasks']
                 # taskComma = taskComma.replace(' ','')
@@ -301,6 +327,7 @@ def edit(request):
                     # print('deleting...')
                     if(i.name not in taskList):
                         m.expenditure -= i.cost
+                        tsk += str(i.name) + '\n'
                         i.delete()
                     else:
                         taskList.remove(i.name)
@@ -315,7 +342,19 @@ def edit(request):
             else:
                 for i in oldtasks:
                     m.expenditure -= i.cost
+                    tsk += str(i.name) + '\n' 
                     i.delete()
+
+            p = m.participants.replace(' ','').split(",")
+            sub = str(m.name) + " at " + str(m.venue.name) + " from " + str((m.start).strftime('%A %d %B %Y %H:%M hrs'))  
+            msg = "Meeting has been MODIFIED. New Meeting details are as follows:\n" + str(sub) + '\n' + str(m.info) + "\nPlease be noted."
+            send_mail(p, msg, sub1)    
+            l = len(tsk)
+            if(l > 0):
+                p = [m.creatingStaff.email]
+                sub = "CANCEL the tasks | " + str(m.name) + " at " + str(m.venue.name) + " from " + str((m.start + datetime.timedelta(hours=5, minutes=30)).strftime('%A %d %B %Y %H:%M hrs'))
+                msg = "Please cancel the following tasks and get refund if already completed:\n" + tsk 
+                send_mail(p, msg, sub)
 
             m.save()
             return render(request, 'meeting_success.html', {'user': request.user, 'msg': 'Meeting Successfully Modified'})
